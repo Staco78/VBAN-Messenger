@@ -4,6 +4,8 @@ import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFuncti
 import User from "../users/user";
 import users from "../users";
 import EventEmitter from "events";
+import { randomInt } from "crypto";
+import { Server as ServerType } from "@/types";
 
 export interface ServerOptions {
     port: number;
@@ -29,28 +31,24 @@ export interface ServerInfos {
     userComment: string;
 }
 
-interface ServerEvents {
-    userConnected: () => void;
-    message: (packet: any, sender: User, isUTF8: boolean) => void;
-}
-
-export declare interface Server {
-    on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
-    emit<U extends keyof ServerEvents>(event: U, ...args: Parameters<ServerEvents[U]>): boolean;
-}
-
-export class Server extends EventEmitter {
+export class Server extends EventEmitter implements ServerType {
     UDPServer: dgram.Socket;
 
     constructor(public options: ServerOptions, public infos: ServerInfos) {
         super();
 
         this.UDPServer = dgram.createSocket("udp4");
-        this.UDPServer.on("message", this.messageHandler.bind(this));
+        this.UDPServer.on("message", (msg, rinfo) => {
+            try {
+                this.messageHandler(msg, rinfo);
+            } catch (error) {
+                console.error(error);
+            }
+        });
         this.UDPServer.bind(options.port);
     }
 
-    messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
+    async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
         if (msg.length < 28) return;
 
         // @ts-ignore
@@ -69,8 +67,6 @@ export class Server extends EventEmitter {
 
         if (header.header !== "VBAN") return;
 
-        const user = users.getUser({ host: rinfo.address, port: rinfo.port }, true);
-
         switch (header.subProtocol) {
             case SubProtocol.audio:
                 throw new Error("Audio not implemented");
@@ -79,7 +75,7 @@ export class Server extends EventEmitter {
             case SubProtocol.text:
                 throw new Error("Text not implemented");
             case SubProtocol.service:
-                new ServicePacket(this, user, header).parse(msg.slice(28));
+                new ServicePacket(this, rinfo, header, msg.slice(28)).parse();
                 break;
 
             default:
@@ -87,8 +83,17 @@ export class Server extends EventEmitter {
         }
     }
 
+    async getUser(rinfo: dgram.RemoteInfo): Promise<User> {
+        let user = users.findUser(rinfo);
+        if (!user) {
+            user = await this.ping(rinfo);
+            if (!user) throw new Error("User ping timeout");
+        }
+
+        return user;
+    }
+
     sendPong(pingPacket: ServicePacket) {
-        const buffer = Buffer.alloc(676 + 28);
         const header = packetHeaderFromServicePacketHeader({
             header: "VBAN",
             function: ServicePacketFunction.reply,
@@ -98,6 +103,47 @@ export class Server extends EventEmitter {
             streamName: pingPacket.header.streamName,
         });
 
+        this.sendIndentification(header, pingPacket.rinfo);
+    }
+
+    async ping(infos: dgram.RemoteInfo): Promise<User | null> {
+        return new Promise<User | null>((resolve, reject) => {
+            const header = packetHeaderFromServicePacketHeader({
+                header: "VBAN",
+                function: ServicePacketFunction.reply,
+                type: ServicePacketType.identification,
+                additionalInfo: 0,
+                frameCounter: randomInt(0, 0xffffffff),
+                streamName: "VBAN Identification",
+            });
+            this.sendIndentification(header, infos);
+
+            let resolved = false;
+
+            const timeout = setTimeout(() => {
+                if (!resolved) {
+                    resolved = true;
+                    ServicePacket.removeHandler(ServicePacketType.identification, ServicePacketFunction.reply, handler);
+                    resolve(null);
+                }
+            }, 5000);
+
+            const handler = (packet: ServicePacket) => {
+                if (!resolved) {
+                    if (!packet.userData) throw new Error("No data in pong");
+                    resolved = true;
+                    ServicePacket.removeHandler(ServicePacketType.identification, ServicePacketFunction.reply, handler);
+                    clearTimeout(timeout);
+                    resolve(users.createUser(packet.rinfo, packet.userData));
+                }
+            };
+
+            ServicePacket.setHandler(ServicePacketType.identification, ServicePacketFunction.reply, handler);
+        });
+    }
+
+    sendIndentification(header: PacketHeader, rinfo: dgram.RemoteInfo) {
+        const buffer = Buffer.alloc(676 + 28);
         buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
 
         buffer.writeUInt32LE(this.infos.bitType, 28);
@@ -119,10 +165,10 @@ export class Server extends EventEmitter {
         buffer.write(this.infos.userName, 420 + 28, 128);
         buffer.write(this.infos.userComment, 548 + 28, 128);
 
-        this.sendBuffer(pingPacket.user, buffer);
+        this.sendBuffer(rinfo, buffer);
     }
 
-    sendBuffer(to: User, buffer: Buffer) {
-        this.UDPServer.send(buffer, to.port, to.host);
+    sendBuffer(to: dgram.RemoteInfo, buffer: Buffer) {
+        this.UDPServer.send(buffer, to.port, to.address);
     }
 }

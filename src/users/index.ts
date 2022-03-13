@@ -1,25 +1,23 @@
-import { PacketInfos } from "../vban/packets/packet";
+import { PingData } from "@/vban/packets/servicePacket";
+import { RemoteInfo } from "dgram";
 import User from "./user";
 
 let users: User[] = [];
 
-function findUser(infos: PacketInfos): User | null {
-    const user = users.find(u => u.host === infos.host && u.port === infos.port);
+function findUser(infos: RemoteInfo): User | null {
+    const user = users.find(u => u.infos.remoteInfos.address === infos.address && u.infos.remoteInfos.port === infos.port);
     return user || null;
 }
 
-function createUser(infos: PacketInfos) {
-    const user = new User(infos.host, infos.port);
+function createUser(rinfos: RemoteInfo, infos: PingData) {
+    const user = new User(rinfos, infos);
     users.push(user);
     return user;
 }
 
-function getUser(infos: PacketInfos, create: boolean = false): User {
+function getUser(infos: RemoteInfo): User {
     const user = findUser(infos);
-    if (!user) {
-        if (create) return createUser(infos);
-        throw new Error("User not found");
-    }
+    if (!user) throw new Error("User not found");
     return user;
 }
 

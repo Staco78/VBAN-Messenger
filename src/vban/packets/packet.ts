@@ -1,4 +1,4 @@
-import User from "../../users/user";
+import { RemoteInfo } from "dgram";
 import { Server } from "../server";
 
 export enum SubProtocol {
@@ -24,26 +24,6 @@ export interface PacketInfos {
     port: number;
 }
 
-export interface PingData {
-    bitType: number;
-    bitFeature: number;
-    bitFeatureExt: number;
-    preferedRate: number;
-    minRate: number;
-    maxRate: number;
-    version: number;
-
-    GPSPosition: string;
-    UserPosition: string;
-    langCode: string;
-
-    deviceName: string;
-    manufacturerName: string;
-    applicationName: string;
-    userName: string;
-    userComment: string;
-}
-
 export function packetHeaderToBuffer(header: PacketHeader): Buffer {
     const buffer = Buffer.alloc(28);
     buffer.write(header.header, 0, 4, "ascii");
@@ -57,7 +37,7 @@ export function packetHeaderToBuffer(header: PacketHeader): Buffer {
 }
 
 export abstract class BasePacket {
-    constructor(public server: Server, public user: User, public header: PacketHeader) {}
+    constructor(public server: Server, public rinfo: RemoteInfo, public header: PacketHeader, public data: Buffer) {}
 
     abstract parse(data: Buffer): void;
 }

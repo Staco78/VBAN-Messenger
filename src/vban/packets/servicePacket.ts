@@ -1,6 +1,7 @@
-import User from "../../users/user";
 import { Server } from "../server";
-import { BasePacket, PacketHeader, packetHeaderToBuffer, PacketInfos, PingData, SubProtocol } from "./packet";
+import { BasePacket, PacketHeader, SubProtocol } from "./packet";
+import dgram from "dgram";
+import EventEmitter from "events";
 
 interface ServicePacketHeader {
     header: string;
@@ -24,6 +25,26 @@ export function packetHeaderFromServicePacketHeader(header: ServicePacketHeader)
     };
 }
 
+export interface PingData {
+    bitType: number;
+    bitFeature: number;
+    bitFeatureExt: number;
+    preferedRate: number;
+    minRate: number;
+    maxRate: number;
+    version: number;
+
+    GPSPosition: string;
+    UserPosition: string;
+    langCode: string;
+
+    deviceName: string;
+    manufacturerName: string;
+    applicationName: string;
+    userName: string;
+    userComment: string;
+}
+
 export enum ServicePacketType {
     identification = 0,
     chatUTF8 = 1,
@@ -38,10 +59,12 @@ export enum ServicePacketFunction {
 
 export class ServicePacket extends BasePacket {
     serviceHeader: ServicePacketHeader;
-    data: Buffer | null = null;
+    userData: PingData | null = null;
 
-    constructor(server: Server, user: User, header: PacketHeader) {
-        super(server, user, header);
+    private static events = new EventEmitter();
+
+    constructor(server: Server, rinfo: dgram.RemoteInfo, header: PacketHeader, data: Buffer) {
+        super(server, rinfo, header, data);
         this.serviceHeader = {
             header: header.header,
             function: header.samplePerFrame,
@@ -52,46 +75,52 @@ export class ServicePacket extends BasePacket {
         };
     }
 
-    parse(data: Buffer) {
-        this.data = data;
-
+    async parse() {
         if (this.serviceHeader.type == ServicePacketType.identification) {
-            if (this.serviceHeader.function == ServicePacketFunction.ping) {
-                this.server.sendPong(this);
+            if (this.serviceHeader.function == ServicePacketFunction.ping || this.serviceHeader.function == ServicePacketFunction.reply) {
+                if (this.serviceHeader.function == ServicePacketFunction.ping) this.server.sendPong(this);
 
-                if (data.length >= 676) {
-                    const d: PingData = {
-                        bitType: data.readUInt32LE(0),
-                        bitFeature: data.readUInt32LE(4),
-                        bitFeatureExt: data.readUInt32LE(8),
-                        preferedRate: data.readUInt32LE(12),
-                        minRate: data.readUInt32LE(16),
-                        maxRate: data.readUInt32LE(20),
-                        version: data.readUInt32LE(28),
+                if (this.data.length >= 676) {
+                    this.userData = {
+                        bitType: this.data.readUInt32LE(0),
+                        bitFeature: this.data.readUInt32LE(4),
+                        bitFeatureExt: this.data.readUInt32LE(8),
+                        preferedRate: this.data.readUInt32LE(12),
+                        minRate: this.data.readUInt32LE(16),
+                        maxRate: this.data.readUInt32LE(20),
+                        version: this.data.readUInt32LE(28),
 
-                        GPSPosition: data.toString("ascii", 32, 40),
-                        UserPosition: data.toString("ascii", 40, 48),
-                        langCode: data.toString("ascii", 48, 56),
+                        GPSPosition: this.data.toString("ascii", 32, 40),
+                        UserPosition: this.data.toString("ascii", 40, 48),
+                        langCode: this.data.toString("ascii", 48, 56),
 
                         // reserved from 56 to 164
 
-                        deviceName: data.toString("ascii", 164, 228),
-                        manufacturerName: data.toString("ascii", 228, 292),
-                        applicationName: data.toString("ascii", 292, 356),
+                        deviceName: this.data.toString("ascii", 164, 228),
+                        manufacturerName: this.data.toString("ascii", 228, 292),
+                        applicationName: this.data.toString("ascii", 292, 356),
 
                         // reserved from 356 to 420
 
-                        userName: data.toString("utf8", 420, 548),
-                        userComment: data.toString("utf8", 548, 676),
+                        userName: this.data.toString("utf8", 420, 548),
+                        userComment: this.data.toString("utf8", 548, 676),
                     };
-                    console.log(d);
-                    
-                    this.user.infos = d;
                 }
             }
         } else if (this.serviceHeader.type == ServicePacketType.chatUTF8) {
-            this.server.emit("message", this, this.user, true);
-            this.user.emit("message", this);
+            const user = await this.server.getUser(this.rinfo);
+            this.server.emit("message", this, user, true);
+            user.emit("message", this);
         }
+
+        ServicePacket.events.emit(`${this.serviceHeader.type}_${this.serviceHeader.function}`, this);
+    }
+
+    static setHandler(type: ServicePacketType, func: ServicePacketFunction, handler: (packet: ServicePacket) => void) {
+        this.events.on(`${type}_${func}`, handler);
+    }
+
+    static removeHandler(type: ServicePacketType, func: ServicePacketFunction, hander: (packet: ServicePacket) => void) {
+        this.events.removeListener(`${type}_${func}`, hander);
     }
 }
