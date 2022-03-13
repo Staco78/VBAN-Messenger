@@ -1,8 +1,10 @@
 import { Server } from "@/vban/server";
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, session } from "electron";
 import { Server as ServerType } from "@/types";
+import fs from "fs";
+import path from "path";
 
-function createWindow() {
+async function createWindow() {
     const window = new BrowserWindow({
         titleBarStyle: "default",
         webPreferences: {
@@ -13,7 +15,11 @@ function createWindow() {
         width: 1920,
     });
 
-    window.webContents.openDevTools();
+    const reactDevtoolsPath = path.join(process.cwd(), "./react-devtools");
+    if (process.env.NODE_ENV === "development") {
+        if (fs.existsSync(reactDevtoolsPath)) await session.defaultSession.loadExtension(reactDevtoolsPath, { allowFileAccess: true });
+        window.webContents.openDevTools();
+    }
     window.loadFile("dist/index.html");
 }
 
@@ -24,7 +30,6 @@ app.on("ready", () => {
 app.on("window-all-closed", () => {
     app.quit();
 });
-
 
 const server: ServerType = new Server();
 server.on("message", (msg, sender, isUTF8) => {
