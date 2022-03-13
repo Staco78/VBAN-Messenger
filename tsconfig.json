@@ -1,12 +1,18 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
+        /* Visit https://aka.ms/tsconfig.json to read more about this file */
         "target": "ESNext",
-        "moduleResolution": "Node",
-        "outDir": "dist",
+        "module": "ESNext",
         "strict": true,
         "esModuleInterop": true,
-        "rootDir": "src"
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "baseUrl": "./",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "moduleResolution": "node"
     },
     "exclude": ["node_modules"]
 }

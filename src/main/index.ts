@@ -12,11 +12,11 @@ function createWindow() {
     });
 
     window.webContents.openDevTools();
-    window.loadURL("https://google.com");
+    window.loadFile("dist/index.html");
 }
 
 app.on("ready", () => {
-    // createWindow();
+    createWindow();
 });
 
 app.on("window-all-closed", () => {
