@@ -7,7 +7,7 @@ let users: User[] = [];
 const me: User = new User(
     {
         address: "0.0.0.0",
-        port: 6890,
+        port: 6980,
     },
     {
         bitType: 0,
@@ -45,4 +45,8 @@ function getUser(infos: RemoteInfo): User {
     return user;
 }
 
-export default { findUser, getUser, createUser, me };
+function getAllUsers(): User[] {
+    return users;
+}
+
+export default { findUser, getUser, createUser, getAllUsers, me };

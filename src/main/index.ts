@@ -1,15 +1,17 @@
 import { Server } from "@/vban/server";
-import { app, BrowserWindow, session } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import { Server as ServerType } from "@/types";
 import fs from "fs";
 import path from "path";
+import { initIPC } from "./ipc";
+
+const server: ServerType = new Server();
 
 async function createWindow() {
     const window = new BrowserWindow({
         titleBarStyle: "default",
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
+            preload: path.join(process.cwd(), "src/main/preload.js"),
         },
         height: 1080,
         width: 1920,
@@ -21,6 +23,7 @@ async function createWindow() {
         window.webContents.openDevTools();
     }
     window.loadFile("dist/index.html");
+    initIPC(window, server);
 }
 
 app.on("ready", () => {
@@ -29,9 +32,4 @@ app.on("ready", () => {
 
 app.on("window-all-closed", () => {
     app.quit();
-});
-
-const server: ServerType = new Server();
-server.on("message", (msg, sender, isUTF8) => {
-    console.log(`${sender.infos.userName} send ${msg.data.toString(isUTF8 ? "utf8" : "ascii")}`);
 });

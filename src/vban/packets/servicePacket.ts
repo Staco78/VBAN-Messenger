@@ -109,7 +109,7 @@ export class ServicePacket extends BasePacket {
             }
         } else if (this.serviceHeader.type == ServicePacketType.chatUTF8) {
             const user = await this.server.getUser(this.rinfo);
-            this.server.emit("message", this, user, true);
+            this.server.emit("message", this.data.toString("utf8"), user);
             user.emit("message", this);
         }
 

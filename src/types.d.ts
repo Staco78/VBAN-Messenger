@@ -42,8 +42,8 @@ declare interface User {
 }
 
 interface ServerEvents {
-    userConnected: () => void;
-    message: (packet: Packet, sender: User, isUTF8: boolean) => void;
+    userConnected: (user: User) => void;
+    message: (msg: string, sender: User) => void;
 }
 
 declare interface Server {
@@ -52,7 +52,8 @@ declare interface Server {
 }
 
 export interface IElectronAPI {
-    getUsers(): Promise<User[]>;
+    getAllUsers(): Promise<User[]>;
+    on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
 }
 
 declare global {
