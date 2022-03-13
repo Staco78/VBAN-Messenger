@@ -35,7 +35,7 @@ export interface PingData {
     version: number;
 
     GPSPosition: string;
-    UserPosition: string;
+    userPosition: string;
     langCode: string;
 
     deviceName: string;
@@ -91,7 +91,7 @@ export class ServicePacket extends BasePacket {
                         version: this.data.readUInt32LE(28),
 
                         GPSPosition: this.data.toString("ascii", 32, 40),
-                        UserPosition: this.data.toString("ascii", 40, 48),
+                        userPosition: this.data.toString("ascii", 40, 48),
                         langCode: this.data.toString("ascii", 48, 56),
 
                         // reserved from 56 to 164

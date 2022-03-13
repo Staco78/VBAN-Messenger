@@ -1,11 +1,35 @@
 import { PingData } from "@/vban/packets/servicePacket";
 import { RemoteInfo } from "dgram";
 import User from "./user";
+import os from "os";
 
 let users: User[] = [];
+const me: User = new User(
+    {
+        address: "0.0.0.0",
+        port: 6890,
+    },
+    {
+        bitType: 0,
+        bitFeature: 0,
+        bitFeatureExt: 0,
+        preferedRate: 0,
+        minRate: 0,
+        maxRate: 0,
+        version: 0,
+        GPSPosition: "",
+        userPosition: "",
+        langCode: "fr-fr",
+        deviceName: os.hostname(),
+        manufacturerName: "",
+        applicationName: "VBAN-Messenger",
+        userName: "Staco",
+        userComment: "",
+    }
+);
 
 function findUser(infos: RemoteInfo): User | null {
-    const user = users.find(u => u.infos.remoteInfos.address === infos.address && u.infos.remoteInfos.port === infos.port);
+    const user = users.find(u => u.infos.connectionInfos.address === infos.address && u.infos.connectionInfos.port === infos.port);
     return user || null;
 }
 
@@ -21,4 +45,4 @@ function getUser(infos: RemoteInfo): User {
     return user;
 }
 
-export default { findUser, getUser, createUser };
+export default { findUser, getUser, createUser, me };

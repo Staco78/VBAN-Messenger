@@ -1,5 +1,3 @@
-import dgram from "dgram";
-
 export interface UserData {
     bitType: number;
     bitFeature: number;
@@ -10,7 +8,7 @@ export interface UserData {
     version: number;
 
     GPSPosition: string;
-    UserPosition: string;
+    userPosition: string;
     langCode: string;
 
     deviceName: string;
@@ -19,7 +17,12 @@ export interface UserData {
     userName: string;
     userComment: string;
 
-    remoteInfos: dgram.RemoteInfo;
+    connectionInfos: ConnectionInfos;
+}
+
+export interface ConnectionInfos {
+    address: string;
+    port: number;
 }
 
 declare abstract class Packet {

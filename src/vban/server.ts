@@ -34,7 +34,7 @@ export interface ServerInfos {
 export class Server extends EventEmitter implements ServerType {
     UDPServer: dgram.Socket;
 
-    constructor(public options: ServerOptions, public infos: ServerInfos) {
+    constructor() {
         super();
 
         this.UDPServer = dgram.createSocket("udp4");
@@ -45,7 +45,7 @@ export class Server extends EventEmitter implements ServerType {
                 console.error(error);
             }
         });
-        this.UDPServer.bind(options.port);
+        this.UDPServer.bind(users.me.infos.connectionInfos.port);
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
@@ -146,24 +146,24 @@ export class Server extends EventEmitter implements ServerType {
         const buffer = Buffer.alloc(676 + 28);
         buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
 
-        buffer.writeUInt32LE(this.infos.bitType, 28);
-        buffer.writeUInt32LE(this.infos.bitFeature, 32);
-        buffer.writeUInt32LE(this.infos.bitFeatureExt, 36);
-        buffer.writeUInt32LE(this.infos.preferedRate, 40);
-        buffer.writeUInt32LE(this.infos.minRate, 44);
-        buffer.writeUInt32LE(this.infos.maxRate, 48);
-        buffer.writeUInt32LE(this.infos.version, 56);
+        buffer.writeUInt32LE(users.me.infos.bitType, 28);
+        buffer.writeUInt32LE(users.me.infos.bitFeature, 32);
+        buffer.writeUInt32LE(users.me.infos.bitFeatureExt, 36);
+        buffer.writeUInt32LE(users.me.infos.preferedRate, 40);
+        buffer.writeUInt32LE(users.me.infos.minRate, 44);
+        buffer.writeUInt32LE(users.me.infos.maxRate, 48);
+        buffer.writeUInt32LE(users.me.infos.version, 56);
 
-        buffer.write(this.infos.GPSPosition, 32 + 28, 8);
-        buffer.write(this.infos.UserPosition, 40 + 28, 8);
-        buffer.write(this.infos.langCode, 48 + 28, 8);
+        buffer.write(users.me.infos.GPSPosition, 32 + 28, 8);
+        buffer.write(users.me.infos.userPosition, 40 + 28, 8);
+        buffer.write(users.me.infos.langCode, 48 + 28, 8);
 
-        buffer.write(this.infos.deviceName, 164 + 28, 64);
-        buffer.write(this.infos.manufacturerName, 228 + 28, 64);
-        buffer.write(this.infos.applicationName, 292 + 28, 64);
+        buffer.write(users.me.infos.deviceName, 164 + 28, 64);
+        buffer.write(users.me.infos.manufacturerName, 228 + 28, 64);
+        buffer.write(users.me.infos.applicationName, 292 + 28, 64);
 
-        buffer.write(this.infos.userName, 420 + 28, 128);
-        buffer.write(this.infos.userComment, 548 + 28, 128);
+        buffer.write(users.me.infos.userName, 420 + 28, 128);
+        buffer.write(users.me.infos.userComment, 548 + 28, 128);
 
         this.sendBuffer(rinfo, buffer);
     }
