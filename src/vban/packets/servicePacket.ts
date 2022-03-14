@@ -1,4 +1,4 @@
-import { server } from "../../server";
+import { server } from "../server";
 import { BasePacket, PacketHeader, SubProtocol } from "./packet";
 import dgram from "dgram";
 import EventEmitter from "events";

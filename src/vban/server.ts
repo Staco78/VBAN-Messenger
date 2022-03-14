@@ -1,7 +1,7 @@
 import dgram from "dgram";
-import { PacketHeader, packetHeaderToBuffer, SubProtocol } from "./vban/packets/packet";
-import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFunction, ServicePacketType } from "./vban/packets/servicePacket";
-import users from "./users";
+import { PacketHeader, packetHeaderToBuffer, SubProtocol } from "./packets/packet";
+import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFunction, ServicePacketType } from "./packets/servicePacket";
+import users from "../users";
 import EventEmitter from "events";
 import { randomInt } from "crypto";
 import { _Server as ServerType, UserData } from "@/types";
