@@ -1,11 +1,8 @@
 import React from "react";
+import {useParams} from "react-router-dom";
 
-export default class VBAN_MessengerDMChannel extends React.Component {
-  constructor(props: any) {
-    super(props);
-    this.state = {};
-  }
-  render() {
-    return <div>[Channel]</div>;
-  }
+export default function VBAN_MessengerDMChannel() {
+    let {userId} = useParams();
+
+    return <div>[Channel : {userId}]</div>;
 }

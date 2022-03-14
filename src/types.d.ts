@@ -1,3 +1,4 @@
+declare module "*.module.css";
 export interface PingData {
     bitType: number;
     bitFeature: number;
