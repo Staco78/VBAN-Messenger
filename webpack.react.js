@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyPLugin = require("copy-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -31,8 +32,11 @@ module.exports = {
         filename: "renderer.js",
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/renderer/index.html",
-        }),
-    ],
+      new HtmlWebpackPlugin({
+          template: "./src/renderer/index.html"
+      }),
+      new CopyPLugin({
+          patterns: [{ from: path.resolve(__dirname, "src", "renderer", "assets"), to: path.resolve(__dirname, "dist", "assets") }],
+      }),
+  ],
 };
