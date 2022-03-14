@@ -1,11 +1,8 @@
-import { Server } from "@/vban/server";
-import { app, BrowserWindow, ipcMain, session } from "electron";
-import { Server as ServerType } from "@/types";
+import { server } from "@/server";
+import { app, BrowserWindow, session } from "electron";
 import fs from "fs";
 import path from "path";
 import { initIPC } from "./ipc";
-
-const server: ServerType = new Server();
 
 async function createWindow() {
     const window = new BrowserWindow({

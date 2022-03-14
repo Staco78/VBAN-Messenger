@@ -10,7 +10,8 @@
         "jsx": "react",
         "baseUrl": "./",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["src/*"],
+            "@@/*": ["src/renderer/*"]
         },
         "moduleResolution": "node"
     },

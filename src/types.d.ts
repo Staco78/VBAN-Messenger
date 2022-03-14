@@ -1,4 +1,4 @@
-export interface UserData {
+export interface PingData {
     bitType: number;
     bitFeature: number;
     bitFeatureExt: number;
@@ -16,8 +16,6 @@ export interface UserData {
     applicationName: string;
     userName: string;
     userComment: string;
-
-    connectionInfos: ConnectionInfos;
 }
 
 export interface ConnectionInfos {
@@ -25,20 +23,23 @@ export interface ConnectionInfos {
     port: number;
 }
 
+export interface UserData extends PingData {
+    connectionInfos: ConnectionInfos;
+}
+
 declare abstract class Packet {
     constructor(public server: Server, public rinfo: RemoteInfo, public header: PacketHeader, public data: Buffer);
     abstract parse(data: Buffer): void;
 }
 
-interface UserEvents {
-    connected: () => void;
-    message: (packet: any) => void;
+export interface User {
+    infos: UserData;
+    name: string;
 }
 
-declare interface User {
-    on<U extends keyof UserEvents>(event: U, listener: UserEvents[U]): this;
-    emit<U extends keyof UserEvents>(event: U, ...args: Parameters<UserEvents[U]>): boolean;
-    infos: UserData;
+interface _ServerEvents {
+    userConnected: (user: UserData) => void;
+    message: (msg: string, sender: UserData) => void;
 }
 
 interface ServerEvents {
@@ -51,9 +52,19 @@ declare interface Server {
     emit<U extends keyof ServerEvents>(event: U, ...args: Parameters<ServerEvents[U]>): boolean;
 }
 
+declare interface _Server {
+    on<U extends keyof _ServerEvents>(event: U, listener: _ServerEvents[U]): this;
+    emit<U extends keyof _ServerEvents>(event: U, ...args: Parameters<_ServerEvents[U]>): boolean;
+
+    sendPong(pingPacket: ServicePacket): void;
+    getUser(rinfo: dgram.RemoteInfo): Promise<UserData>;
+}
+
 export interface IElectronAPI {
     getAllUsers(): Promise<User[]>;
-    on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
+    server: {
+        on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
+    };
 }
 
 declare global {

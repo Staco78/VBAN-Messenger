@@ -1,7 +1,8 @@
-import { Server } from "../server";
+import { server } from "../../server";
 import { BasePacket, PacketHeader, SubProtocol } from "./packet";
 import dgram from "dgram";
 import EventEmitter from "events";
+import { PingData } from "@/types";
 
 interface ServicePacketHeader {
     header: string;
@@ -25,26 +26,6 @@ export function packetHeaderFromServicePacketHeader(header: ServicePacketHeader)
     };
 }
 
-export interface PingData {
-    bitType: number;
-    bitFeature: number;
-    bitFeatureExt: number;
-    preferedRate: number;
-    minRate: number;
-    maxRate: number;
-    version: number;
-
-    GPSPosition: string;
-    userPosition: string;
-    langCode: string;
-
-    deviceName: string;
-    manufacturerName: string;
-    applicationName: string;
-    userName: string;
-    userComment: string;
-}
-
 export enum ServicePacketType {
     identification = 0,
     chatUTF8 = 1,
@@ -63,8 +44,8 @@ export class ServicePacket extends BasePacket {
 
     private static events = new EventEmitter();
 
-    constructor(server: Server, rinfo: dgram.RemoteInfo, header: PacketHeader, data: Buffer) {
-        super(server, rinfo, header, data);
+    constructor(rinfo: dgram.RemoteInfo, header: PacketHeader, data: Buffer) {
+        super(rinfo, header, data);
         this.serviceHeader = {
             header: header.header,
             function: header.samplePerFrame,
@@ -78,7 +59,7 @@ export class ServicePacket extends BasePacket {
     async parse() {
         if (this.serviceHeader.type == ServicePacketType.identification) {
             if (this.serviceHeader.function == ServicePacketFunction.ping || this.serviceHeader.function == ServicePacketFunction.reply) {
-                if (this.serviceHeader.function == ServicePacketFunction.ping) this.server.sendPong(this);
+                if (this.serviceHeader.function == ServicePacketFunction.ping) server.sendPong(this);
 
                 if (this.data.length >= 676) {
                     this.userData = {
@@ -90,27 +71,26 @@ export class ServicePacket extends BasePacket {
                         maxRate: this.data.readUInt32LE(20),
                         version: this.data.readUInt32LE(28),
 
-                        GPSPosition: this.data.toString("ascii", 32, 40),
-                        userPosition: this.data.toString("ascii", 40, 48),
-                        langCode: this.data.toString("ascii", 48, 56),
+                        GPSPosition: this.data.toString("ascii", 32, 40).replace(/\0/g, ""),
+                        userPosition: this.data.toString("ascii", 40, 48).replace(/\0/g, ""),
+                        langCode: this.data.toString("ascii", 48, 56).replace(/\0/g, ""),
 
                         // reserved from 56 to 164
 
-                        deviceName: this.data.toString("ascii", 164, 228),
-                        manufacturerName: this.data.toString("ascii", 228, 292),
-                        applicationName: this.data.toString("ascii", 292, 356),
+                        deviceName: this.data.toString("ascii", 164, 228).replace(/\0/g, ""),
+                        manufacturerName: this.data.toString("ascii", 228, 292).replace(/\0/g, ""),
+                        applicationName: this.data.toString("ascii", 292, 356).replace(/\0/g, ""),
 
                         // reserved from 356 to 420
 
-                        userName: this.data.toString("utf8", 420, 548),
-                        userComment: this.data.toString("utf8", 548, 676),
+                        userName: this.data.toString("utf8", 420, 548).replace(/\0/g, ""),
+                        userComment: this.data.toString("utf8", 548, 676).replace(/\0/g, ""),
                     };
                 }
             }
         } else if (this.serviceHeader.type == ServicePacketType.chatUTF8) {
-            const user = await this.server.getUser(this.rinfo);
-            this.server.emit("message", this.data.toString("utf8"), user);
-            user.emit("message", this);
+            const user = await server.getUser(this.rinfo);
+            server.emit("message", this.data.toString("utf8"), user);
         }
 
         ServicePacket.events.emit(`${this.serviceHeader.type}_${this.serviceHeader.function}`, this);

@@ -1,11 +1,10 @@
 import dgram from "dgram";
-import { PacketHeader, packetHeaderToBuffer, SubProtocol } from "./packets/packet";
-import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFunction, ServicePacketType } from "./packets/servicePacket";
-import User from "../users/user";
-import users from "../users";
+import { PacketHeader, packetHeaderToBuffer, SubProtocol } from "./vban/packets/packet";
+import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFunction, ServicePacketType } from "./vban/packets/servicePacket";
+import users from "./users";
 import EventEmitter from "events";
 import { randomInt } from "crypto";
-import { Server as ServerType } from "@/types";
+import { _Server as ServerType, UserData } from "@/types";
 
 export interface ServerOptions {
     port: number;
@@ -45,7 +44,7 @@ export class Server extends EventEmitter implements ServerType {
                 console.error(error);
             }
         });
-        this.UDPServer.bind(users.me.infos.connectionInfos.port);
+        this.UDPServer.bind(users.me.connectionInfos.port);
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
@@ -75,7 +74,7 @@ export class Server extends EventEmitter implements ServerType {
             case SubProtocol.text:
                 throw new Error("Text not implemented");
             case SubProtocol.service:
-                new ServicePacket(this, rinfo, header, msg.slice(28)).parse();
+                new ServicePacket(rinfo, header, msg.slice(28)).parse();
                 break;
 
             default:
@@ -83,7 +82,7 @@ export class Server extends EventEmitter implements ServerType {
         }
     }
 
-    async getUser(rinfo: dgram.RemoteInfo): Promise<User> {
+    async getUser(rinfo: dgram.RemoteInfo): Promise<UserData> {
         let user = users.findUser(rinfo);
         if (!user) {
             user = await this.ping(rinfo);
@@ -106,8 +105,8 @@ export class Server extends EventEmitter implements ServerType {
         this.sendIndentification(header, pingPacket.rinfo);
     }
 
-    async ping(infos: dgram.RemoteInfo): Promise<User | null> {
-        return new Promise<User | null>((resolve, reject) => {
+    async ping(infos: dgram.RemoteInfo): Promise<UserData | null> {
+        return new Promise<UserData | null>((resolve, reject) => {
             const header = packetHeaderFromServicePacketHeader({
                 header: "VBAN",
                 function: ServicePacketFunction.reply,
@@ -134,7 +133,12 @@ export class Server extends EventEmitter implements ServerType {
                     resolved = true;
                     ServicePacket.removeHandler(ServicePacketType.identification, ServicePacketFunction.reply, handler);
                     clearTimeout(timeout);
-                    resolve(users.createUser(packet.rinfo, packet.userData));
+                    let user = users.findUser(packet.rinfo);
+                    if (!user) {
+                        user = users.createUserData(packet.rinfo, packet.userData);
+                        this.emit("userConnected", user);
+                    }
+                    resolve(user);
                 }
             };
 
@@ -146,24 +150,24 @@ export class Server extends EventEmitter implements ServerType {
         const buffer = Buffer.alloc(676 + 28);
         buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
 
-        buffer.writeUInt32LE(users.me.infos.bitType, 28);
-        buffer.writeUInt32LE(users.me.infos.bitFeature, 32);
-        buffer.writeUInt32LE(users.me.infos.bitFeatureExt, 36);
-        buffer.writeUInt32LE(users.me.infos.preferedRate, 40);
-        buffer.writeUInt32LE(users.me.infos.minRate, 44);
-        buffer.writeUInt32LE(users.me.infos.maxRate, 48);
-        buffer.writeUInt32LE(users.me.infos.version, 56);
+        buffer.writeUInt32LE(users.me.bitType, 28);
+        buffer.writeUInt32LE(users.me.bitFeature, 32);
+        buffer.writeUInt32LE(users.me.bitFeatureExt, 36);
+        buffer.writeUInt32LE(users.me.preferedRate, 40);
+        buffer.writeUInt32LE(users.me.minRate, 44);
+        buffer.writeUInt32LE(users.me.maxRate, 48);
+        buffer.writeUInt32LE(users.me.version, 56);
 
-        buffer.write(users.me.infos.GPSPosition, 32 + 28, 8);
-        buffer.write(users.me.infos.userPosition, 40 + 28, 8);
-        buffer.write(users.me.infos.langCode, 48 + 28, 8);
+        buffer.write(users.me.GPSPosition, 32 + 28, 8);
+        buffer.write(users.me.userPosition, 40 + 28, 8);
+        buffer.write(users.me.langCode, 48 + 28, 8);
 
-        buffer.write(users.me.infos.deviceName, 164 + 28, 64);
-        buffer.write(users.me.infos.manufacturerName, 228 + 28, 64);
-        buffer.write(users.me.infos.applicationName, 292 + 28, 64);
+        buffer.write(users.me.deviceName, 164 + 28, 64);
+        buffer.write(users.me.manufacturerName, 228 + 28, 64);
+        buffer.write(users.me.applicationName, 292 + 28, 64);
 
-        buffer.write(users.me.infos.userName, 420 + 28, 128);
-        buffer.write(users.me.infos.userComment, 548 + 28, 128);
+        buffer.write(users.me.userName, 420 + 28, 128);
+        buffer.write(users.me.userComment, 548 + 28, 128);
 
         this.sendBuffer(rinfo, buffer);
     }
@@ -172,3 +176,5 @@ export class Server extends EventEmitter implements ServerType {
         this.UDPServer.send(buffer, to.port, to.address);
     }
 }
+
+export const server: ServerType = new Server();
