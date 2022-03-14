@@ -1,4 +1,4 @@
-import { server } from "@/server";
+import { server } from "@/vban/server";
 import { app, BrowserWindow, session } from "electron";
 import fs from "fs";
 import path from "path";
