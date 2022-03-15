@@ -1,0 +1,15 @@
+:local .status {
+    background-color: var(--gray-1);
+    width: 32px;
+    height: 24px;
+    border-radius: 5px;
+}
+:local .online {
+    background-color: var(--green);
+}
+:local .dnd {
+    background-color: var(--red);
+}
+:local .idle {
+    background-color: var(--yellow);
+}

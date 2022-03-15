@@ -1,0 +1,10 @@
+:local .left-menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; 
+}
+:local .friends-nav-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 72px);
+}

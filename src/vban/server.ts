@@ -22,12 +22,6 @@ export class Server extends EventEmitter implements ServerType {
             }
         });
         this.UDPServer.bind(users.me.connectionInfos.port);
-
-        (async () => {
-            const user = await this.getUser({ address: "109.190.155.56", port: 6980 });
-            
-            // this.sendMessage("Hello", user);
-        })();
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
@@ -170,6 +164,7 @@ export class Server extends EventEmitter implements ServerType {
     }
 
     sendBuffer(buffer: Buffer, to: ConnectionInfos) {
+        console.log(`send buffer to ${to.address}:${to.port}`);
         this.UDPServer.send(buffer, to.port, to.address);
     }
 }

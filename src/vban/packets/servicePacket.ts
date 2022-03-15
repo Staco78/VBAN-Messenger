@@ -61,7 +61,7 @@ export class ServicePacket extends BasePacket {
 
         if (this.serviceHeader.type == ServicePacketType.identification) {
             if (this.serviceHeader.function == ServicePacketFunction.ping || this.serviceHeader.function == ServicePacketFunction.reply) {
-                // if (this.serviceHeader.function == ServicePacketFunction.ping) server.sendPong(this);
+                if (this.serviceHeader.function == ServicePacketFunction.ping) server.sendPong(this);
 
                 if (data.length >= 676) {
                     this.userData = {
