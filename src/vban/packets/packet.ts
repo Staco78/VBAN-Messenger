@@ -1,4 +1,4 @@
-import { RemoteInfo } from "dgram";
+import { ConnectionInfos } from "@/typings";
 
 export enum SubProtocol {
     audio = 0,
@@ -36,7 +36,7 @@ export function packetHeaderToBuffer(header: PacketHeader): Buffer {
 }
 
 export abstract class BasePacket {
-    constructor(public rinfo: RemoteInfo, public header: PacketHeader, public data: Buffer) {}
+    constructor(public connectionInfos: ConnectionInfos, public header: PacketHeader) {}
 
     abstract parse(data: Buffer): void;
 }

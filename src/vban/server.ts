@@ -4,34 +4,13 @@ import { packetHeaderFromServicePacketHeader, ServicePacket, ServicePacketFuncti
 import users from "../users";
 import EventEmitter from "events";
 import { randomInt } from "crypto";
-import { _Server as ServerType, UserData } from "@/types";
-
-export interface ServerOptions {
-    port: number;
-}
-
-export interface ServerInfos {
-    bitType: number;
-    bitFeature: number;
-    bitFeatureExt: number;
-    preferedRate: number;
-    minRate: number;
-    maxRate: number;
-    version: number;
-
-    GPSPosition: string;
-    UserPosition: string;
-    langCode: string;
-
-    deviceName: string;
-    manufacturerName: string;
-    applicationName: string;
-    userName: string;
-    userComment: string;
-}
+import { _Server as ServerType, UserData, ConnectionInfos } from "@/typings";
+import { packetHeaderFromTextPacketHeader, TextPacket, TextStreamType } from "./packets/textPacket";
 
 export class Server extends EventEmitter implements ServerType {
     UDPServer: dgram.Socket;
+
+    frameCounter = 0;
 
     constructor() {
         super();
@@ -45,6 +24,10 @@ export class Server extends EventEmitter implements ServerType {
             }
         });
         this.UDPServer.bind(users.me.connectionInfos.port);
+
+        this.on("message", (msg: string, user: UserData) => {
+            this.sendMessage(`pong: ${msg}`, user.connectionInfos);
+        });
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
@@ -66,6 +49,8 @@ export class Server extends EventEmitter implements ServerType {
 
         if (header.header !== "VBAN") return;
 
+        if (header.frameCounter > this.frameCounter) this.frameCounter = header.frameCounter;
+
         switch (header.subProtocol) {
             case SubProtocol.audio:
                 throw new Error("Audio not implemented");
@@ -74,7 +59,7 @@ export class Server extends EventEmitter implements ServerType {
             case SubProtocol.text:
                 throw new Error("Text not implemented");
             case SubProtocol.service:
-                new ServicePacket(rinfo, header, msg.slice(28)).parse();
+                new ServicePacket(rinfo, header).parse(msg.slice(28));
                 break;
 
             default:
@@ -82,7 +67,7 @@ export class Server extends EventEmitter implements ServerType {
         }
     }
 
-    async getUser(rinfo: dgram.RemoteInfo): Promise<UserData> {
+    async getUser(rinfo: ConnectionInfos): Promise<UserData> {
         let user = users.findUser(rinfo);
         if (!user) {
             user = await this.ping(rinfo);
@@ -102,10 +87,10 @@ export class Server extends EventEmitter implements ServerType {
             streamName: pingPacket.header.streamName,
         });
 
-        this.sendIndentification(header, pingPacket.rinfo);
+        this.sendIndentification(header, pingPacket.connectionInfos);
     }
 
-    async ping(infos: dgram.RemoteInfo): Promise<UserData | null> {
+    async ping(infos: ConnectionInfos): Promise<UserData | null> {
         return new Promise<UserData | null>((resolve, reject) => {
             const header = packetHeaderFromServicePacketHeader({
                 header: "VBAN",
@@ -133,9 +118,9 @@ export class Server extends EventEmitter implements ServerType {
                     resolved = true;
                     ServicePacket.removeHandler(ServicePacketType.identification, ServicePacketFunction.reply, handler);
                     clearTimeout(timeout);
-                    let user = users.findUser(packet.rinfo);
+                    let user = users.findUser(packet.connectionInfos);
                     if (!user) {
-                        user = users.createUserData(packet.rinfo, packet.userData);
+                        user = users.createUserData(packet.connectionInfos, packet.userData);
                         this.emit("userConnected", user);
                     }
                     resolve(user);
@@ -146,7 +131,7 @@ export class Server extends EventEmitter implements ServerType {
         });
     }
 
-    sendIndentification(header: PacketHeader, rinfo: dgram.RemoteInfo) {
+    sendIndentification(header: PacketHeader, rinfo: ConnectionInfos) {
         const buffer = Buffer.alloc(676 + 28);
         buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
 
@@ -169,10 +154,14 @@ export class Server extends EventEmitter implements ServerType {
         buffer.write(users.me.userName, 420 + 28, 128);
         buffer.write(users.me.userComment, 548 + 28, 128);
 
-        this.sendBuffer(rinfo, buffer);
+        this.sendBuffer(buffer, rinfo);
     }
 
-    sendBuffer(to: dgram.RemoteInfo, buffer: Buffer) {
+    sendMessage(msg: string, to: ConnectionInfos) {
+        ServicePacket.createMessage(msg, to);
+    }
+
+    sendBuffer(buffer: Buffer, to: ConnectionInfos) {
         this.UDPServer.send(buffer, to.port, to.address);
     }
 }

@@ -55,6 +55,7 @@ declare interface Server {
 declare interface _Server {
     on<U extends keyof _ServerEvents>(event: U, listener: _ServerEvents[U]): this;
     emit<U extends keyof _ServerEvents>(event: U, ...args: Parameters<_ServerEvents[U]>): boolean;
+    sendMessage(msg: string, to: ConnectionInfos);
 
     sendPong(pingPacket: ServicePacket): void;
     getUser(rinfo: ConnectionInfos): Promise<UserData>;
@@ -63,6 +64,7 @@ declare interface _Server {
 
 export interface IElectronAPI {
     getAllUsers(): Promise<User[]>;
+    sendMessage(msg: string, to: ConnectionInfos);
     server: {
         on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
     };

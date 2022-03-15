@@ -10,6 +10,10 @@ namespace Server {
 
         window.electronAPI.server.on(event, (...args: any) => (listener as any)(...eventsMap[event](...args)));
     }
+
+    export function sendMessage(msg: string, to: User) {
+        window.electronAPI.sendMessage(msg, to.infos.connectionInfos);
+    }
 }
 
 export default Server;

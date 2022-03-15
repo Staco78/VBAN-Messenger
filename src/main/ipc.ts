@@ -1,12 +1,22 @@
-import { _Server } from "@/types";
+import { ConnectionInfos, _Server } from "@/typings";
+import users from "@/users";
 import { BrowserWindow, ipcMain } from "electron";
 
 export function initIPC(window: BrowserWindow, server: _Server) {
-    const handlers: any = [];
+    const handlers: any = [
+        {
+            name: "getAllUsers",
+            handler: () => users.getAllUsers(),
+        },
+        {
+            name: "sendMessage",
+            handler: (msg: string, to: ConnectionInfos) => server.sendMessage(msg, to),
+        },
+    ];
     const serverEvents = ["message", "userConnected"];
 
     for (const handle of handlers) {
-        ipcMain.handle(handle.name, handle.handler);
+        ipcMain.handle(handle.name, (e, ...args) => handle.handler(...args));
     }
 
     for (const event of serverEvents) {

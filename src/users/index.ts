@@ -1,5 +1,5 @@
 import os from "os";
-import { ConnectionInfos, PingData, UserData } from "@/types";
+import { ConnectionInfos, PingData, UserData } from "@/typings";
 
 const me: UserData = {
     bitType: 0,
