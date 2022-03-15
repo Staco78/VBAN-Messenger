@@ -57,9 +57,11 @@ export class ServicePacket extends BasePacket {
     }
 
     async parse(data: Buffer) {
+        console.log(`Received service packet ${this.serviceHeader.type}_${this.serviceHeader.function}`);
+
         if (this.serviceHeader.type == ServicePacketType.identification) {
             if (this.serviceHeader.function == ServicePacketFunction.ping || this.serviceHeader.function == ServicePacketFunction.reply) {
-                if (this.serviceHeader.function == ServicePacketFunction.ping) server.sendPong(this);
+                // if (this.serviceHeader.function == ServicePacketFunction.ping) server.sendPong(this);
 
                 if (data.length >= 676) {
                     this.userData = {
@@ -113,7 +115,6 @@ export class ServicePacket extends BasePacket {
             additionalInfo: 0,
             streamName: "VBAN Service",
         });
-
 
         const buffer = Buffer.alloc(28 + msg.length);
         buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
