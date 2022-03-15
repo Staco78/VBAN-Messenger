@@ -1,4 +1,4 @@
-import { ServerEvents, _ServerEvents } from "@/types";
+import { ServerEvents, _ServerEvents } from "@/typings";
 import User from "./user";
 
 namespace Server {

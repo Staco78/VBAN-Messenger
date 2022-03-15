@@ -1,4 +1,4 @@
-import { User as UserType, UserData } from "@/types";
+import { User as UserType, UserData } from "@/typings";
 
 export default class User implements UserType {
     constructor(public infos: UserData) {}

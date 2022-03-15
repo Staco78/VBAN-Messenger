@@ -23,7 +23,17 @@ module.exports = {
             },
             {
                 test: /\.css$/i,
-                use: ["style-loader", "css-loader"],
+                use: [
+                    "style-loader",
+                    {
+                        loader: "css-loader",
+                        options: {
+                            modules: {
+                                localIdentName: "[local]-[hash:base64:8]",
+                            },
+                        },
+                    },
+                ],
             },
         ],
     },
@@ -32,11 +42,11 @@ module.exports = {
         filename: "renderer.js",
     },
     plugins: [
-      new HtmlWebpackPlugin({
-          template: "./src/renderer/index.html"
-      }),
-      new CopyPLugin({
-          patterns: [{ from: path.resolve(__dirname, "src", "renderer", "assets"), to: path.resolve(__dirname, "dist", "assets") }],
-      }),
-  ],
+        new HtmlWebpackPlugin({
+            template: "./src/renderer/index.html",
+        }),
+        new CopyPLugin({
+            patterns: [{ from: path.resolve(__dirname, "src", "renderer", "assets"), to: path.resolve(__dirname, "dist", "assets") }],
+        }),
+    ],
 };

@@ -1,4 +1,3 @@
-declare module "*.module.css";
 export interface PingData {
     bitType: number;
     bitFeature: number;
@@ -58,7 +57,8 @@ declare interface _Server {
     emit<U extends keyof _ServerEvents>(event: U, ...args: Parameters<_ServerEvents[U]>): boolean;
 
     sendPong(pingPacket: ServicePacket): void;
-    getUser(rinfo: dgram.RemoteInfo): Promise<UserData>;
+    getUser(rinfo: ConnectionInfos): Promise<UserData>;
+    sendBuffer(buffer: Buffer, to: ConnectionInfos);
 }
 
 export interface IElectronAPI {
