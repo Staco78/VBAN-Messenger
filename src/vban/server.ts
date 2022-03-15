@@ -43,6 +43,8 @@ export class Server extends EventEmitter implements ServerType {
 
         if (header.header !== "VBAN") return;
 
+        console.log(header);
+
         switch (header.subProtocol) {
             case SubProtocol.audio:
                 throw new Error("Audio not implemented");
@@ -86,11 +88,11 @@ export class Server extends EventEmitter implements ServerType {
         return new Promise<UserData | null>((resolve, reject) => {
             const header = packetHeaderFromServicePacketHeader({
                 header: "VBAN",
-                function: ServicePacketFunction.reply,
+                function: ServicePacketFunction.ping,
                 type: ServicePacketType.identification,
                 additionalInfo: 0,
                 frameCounter: randomInt(0, 0xffffffff),
-                streamName: "VBAN Identification",
+                streamName: "VBAN ID",
             });
             this.sendIndentification(header, infos);
 

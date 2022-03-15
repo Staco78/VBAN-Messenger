@@ -100,8 +100,8 @@ export class ServicePacket extends BasePacket {
         this.events.on(`${type}_${func}`, handler);
     }
 
-    static removeHandler(type: ServicePacketType, func: ServicePacketFunction, hander: (packet: ServicePacket) => void) {
-        this.events.removeListener(`${type}_${func}`, hander);
+    static removeHandler(type: ServicePacketType, func: ServicePacketFunction, handler: (packet: ServicePacket) => void) {
+        this.events.removeListener(`${type}_${func}`, handler);
     }
 
     static createMessage(msg: string, to: ConnectionInfos) {

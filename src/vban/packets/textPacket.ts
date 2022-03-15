@@ -74,6 +74,8 @@ export class TextPacket extends BasePacket {
     }
 
     send() {
+        console.log("Sending text packet");
+        
         if (!this.content || this.content.length === 0) {
             console.warn("Trying to send a packet without content");
             return;
