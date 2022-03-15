@@ -24,10 +24,6 @@ export class Server extends EventEmitter implements ServerType {
             }
         });
         this.UDPServer.bind(users.me.connectionInfos.port);
-
-        this.on("message", (msg: string, user: UserData) => {
-            this.sendMessage(`pong: ${msg}`, user.connectionInfos);
-        });
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {

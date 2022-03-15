@@ -11,6 +11,7 @@ module.exports = {
         alias: {
             ["@"]: path.resolve(__dirname, "src"),
             ["@@"]: path.resolve(__dirname, "src/renderer"),
+            ["css"]: path.resolve(__dirname,"src/renderer/assets")
         },
         extensions: [".tsx", ".ts", ".js"],
     },
