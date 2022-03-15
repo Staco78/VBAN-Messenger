@@ -12,7 +12,7 @@ namespace Server {
     }
 
     export function sendMessage(msg: string, to: User) {
-        window.electronAPI.sendMessage(msg, to.infos.connectionInfos);
+        window.electronAPI.sendMessage(msg, to.infos);
     }
 }
 

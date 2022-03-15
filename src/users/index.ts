@@ -21,6 +21,7 @@ const me: UserData = {
         address: "0.0.0.0",
         port: 6980,
     },
+    isVBAN_M_User: true,
 };
 
 const users: UserData[] = [];
@@ -30,25 +31,12 @@ function findUser(infos: ConnectionInfos): UserData | null {
     return user || null;
 }
 
-// function createUser(rinfos: RemoteInfo, infos: PingData) {
-//     const user = new User(rinfos, infos);
-//     users.push(user);
-//     server.emit("userConnected", user);
-//     return user;
-// }
-
-// function getUser(infos: RemoteInfo): User {
-//     const user = findUser(infos);
-//     if (!user) throw new Error("User not found");
-//     return user;
-// }
-
 function getAllUsers(): UserData[] {
     return users;
 }
 
 function createUserData(rinfos: ConnectionInfos, infos: PingData): UserData {
-    return Object.assign(infos, { connectionInfos: rinfos });
+    return Object.assign(infos, { connectionInfos: rinfos, isVBAN_M_User: infos.applicationName === "VBAN-Messenger" });
 }
 
 export default { createUserData, getAllUsers, findUser, me };

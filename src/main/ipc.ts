@@ -1,4 +1,4 @@
-import { ConnectionInfos, _Server } from "@/typings";
+import { UserData, _Server } from "@/typings";
 import users from "@/users";
 import { BrowserWindow, ipcMain } from "electron";
 
@@ -10,7 +10,7 @@ export function initIPC(window: BrowserWindow, server: _Server) {
         },
         {
             name: "sendMessage",
-            handler: (msg: string, to: ConnectionInfos) => server.sendMessage(msg, to),
+            handler: (msg: string, to: UserData) => server.sendMessage(msg, to),
         },
     ];
     const serverEvents = ["message", "userConnected"];

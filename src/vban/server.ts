@@ -5,12 +5,10 @@ import users from "../users";
 import EventEmitter from "events";
 import { randomInt } from "crypto";
 import { _Server as ServerType, UserData, ConnectionInfos } from "@/typings";
-import { packetHeaderFromTextPacketHeader, TextPacket, TextStreamType } from "./packets/textPacket";
+import { TextPacket } from "./packets/textPacket";
 
 export class Server extends EventEmitter implements ServerType {
     UDPServer: dgram.Socket;
-
-    frameCounter = 0;
 
     constructor() {
         super();
@@ -45,15 +43,13 @@ export class Server extends EventEmitter implements ServerType {
 
         if (header.header !== "VBAN") return;
 
-        if (header.frameCounter > this.frameCounter) this.frameCounter = header.frameCounter;
-
         switch (header.subProtocol) {
             case SubProtocol.audio:
                 throw new Error("Audio not implemented");
             case SubProtocol.serial:
                 throw new Error("Serial not implemented");
             case SubProtocol.text:
-                throw new Error("Text not implemented");
+                new TextPacket(rinfo, header).parse(msg.slice(28));
             case SubProtocol.service:
                 new ServicePacket(rinfo, header).parse(msg.slice(28));
                 break;
@@ -153,8 +149,9 @@ export class Server extends EventEmitter implements ServerType {
         this.sendBuffer(buffer, rinfo);
     }
 
-    sendMessage(msg: string, to: ConnectionInfos) {
-        ServicePacket.createMessage(msg, to);
+    sendMessage(msg: string, to: UserData) {
+        if (to.isVBAN_M_User) TextPacket.createMessage(msg, to.connectionInfos);
+        else ServicePacket.createMessage(msg, to.connectionInfos);
     }
 
     sendBuffer(buffer: Buffer, to: ConnectionInfos) {
