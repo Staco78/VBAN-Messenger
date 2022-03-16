@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import css from "css/components/left-menu.module.css";
+import Profile from "./left-menu/profile"
+import NavButtons from "./left-menu/nav-buttons";
 
 export default class LeftMenu extends React.Component {
   constructor(props: any) {
@@ -8,13 +10,16 @@ export default class LeftMenu extends React.Component {
   }
   render() {
     return (
-      <div>
-        <div>{/*Profile*/}</div>
-        <div>
-          <div>{/*Navigation buttons*/}</div>
+      <div className={css.leftMenuContainer}>
+        <Profile />
+        <div className={css.friendsContainer}>
+          <NavButtons tab={(this.state as any).tab} setTab={(tab:number) => (this.setTab(tab))}/>
           <div>{/*Friends*/}</div>
         </div>
       </div>
     );
+  }
+  setTab(tab:number) {
+    this.setState({tab:tab});
   }
 }

@@ -155,6 +155,7 @@ export class Server extends EventEmitter implements ServerType {
     }
 
     sendBuffer(buffer: Buffer, to: ConnectionInfos) {
+        console.log(`send buffer to ${to.address}:${to.port}`);
         this.UDPServer.send(buffer, to.port, to.address);
     }
 }
