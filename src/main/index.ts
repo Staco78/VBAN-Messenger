@@ -24,7 +24,7 @@ async function createWindow() {
 }
 
 app.on("ready", () => {
-    createWindow();
+    if (!process.argv.includes("--headless")) createWindow();
 });
 
 app.on("window-all-closed", () => {

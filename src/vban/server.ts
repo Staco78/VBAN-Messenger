@@ -22,12 +22,6 @@ export class Server extends EventEmitter implements ServerType {
             }
         });
         this.UDPServer.bind(users.me.connectionInfos.port);
-
-        (async () => {
-            const user = await this.getUser({ address: "109.190.155.56", port: 6980 });
-            
-            // this.sendMessage("Hello", user);
-        })();
     }
 
     async messageHandler(msg: Buffer, rinfo: dgram.RemoteInfo) {
@@ -48,9 +42,6 @@ export class Server extends EventEmitter implements ServerType {
         header.sampleRateIndex = data & 0b00011111;
 
         if (header.header !== "VBAN") return;
-
-        console.log("header", header);
-        
 
         switch (header.subProtocol) {
             case SubProtocol.audio:
@@ -79,14 +70,12 @@ export class Server extends EventEmitter implements ServerType {
     }
 
     sendPong(pingPacket: ServicePacket) {
-        console.log("send pong");
-        
         const header = packetHeaderFromServicePacketHeader({
             header: "VBAN",
             function: ServicePacketFunction.reply,
             type: ServicePacketType.identification,
             additionalInfo: 0,
-            frameCounter: 1234567890,
+            frameCounter: 1234567,
             streamName: pingPacket.header.streamName,
         });
 
@@ -94,8 +83,6 @@ export class Server extends EventEmitter implements ServerType {
     }
 
     async ping(infos: ConnectionInfos): Promise<UserData | null> {
-        console.log("send ping");
-        
         return new Promise<UserData | null>((resolve, reject) => {
             const header = packetHeaderFromServicePacketHeader({
                 header: "VBAN",
@@ -138,7 +125,7 @@ export class Server extends EventEmitter implements ServerType {
 
     sendIndentification(header: PacketHeader, rinfo: ConnectionInfos) {
         const buffer = Buffer.alloc(676 + 28);
-        buffer.write(packetHeaderToBuffer(header).toString("ascii"), 0, 28, "ascii");
+        packetHeaderToBuffer(header).copy(buffer);
 
         buffer.writeUInt32LE(users.me.bitType, 28);
         buffer.writeUInt32LE(users.me.bitFeature, 32);
@@ -163,8 +150,6 @@ export class Server extends EventEmitter implements ServerType {
     }
 
     sendMessage(msg: string, to: UserData) {
-        console.log("send message");
-        
         if (to.isVBAN_M_User) TextPacket.createMessage(msg, to.connectionInfos);
         else ServicePacket.createMessage(msg, to.connectionInfos);
     }

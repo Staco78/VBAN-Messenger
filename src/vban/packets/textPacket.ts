@@ -74,14 +74,12 @@ export class TextPacket extends BasePacket {
     }
 
     send() {
-        console.log("Sending text packet");
-        
         if (!this.content || this.content.length === 0) {
             console.warn("Trying to send a packet without content");
             return;
         }
         const buffer = Buffer.alloc(this.content.length + 28);
-        buffer.write(packetHeaderToBuffer(this.header).toString("ascii"), 0, 28, "ascii");
+        packetHeaderToBuffer(this.header).copy(buffer);
         buffer.write(this.content, 28, this.getEncoding(this.textHeader.serialType));
 
         server.sendBuffer(buffer, this.connectionInfos);

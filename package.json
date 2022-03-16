@@ -5,6 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "electron .",
+    "headless": "electron . --headless",
     "build": "webpack",
     "watch": "webpack --watch"
   },

@@ -36,8 +36,6 @@ function getAllUsers(): UserData[] {
 }
 
 function createUserData(rinfos: ConnectionInfos, infos: PingData): UserData {
-    console.log("user created");
-
     return Object.assign(infos, { connectionInfos: rinfos, isVBAN_M_User: infos.applicationName === "VBAN-Messenger" });
 }
 
