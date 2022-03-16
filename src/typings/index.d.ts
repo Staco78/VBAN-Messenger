@@ -66,6 +66,7 @@ declare interface _Server {
 export interface IElectronAPI {
     getAllUsers(): Promise<User[]>;
     sendMessage(msg: string, to: UserData);
+    getCurrentUser(): Promise<UserData>;
     server: {
         on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
     };
