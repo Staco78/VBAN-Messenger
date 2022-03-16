@@ -3,7 +3,7 @@
     flex-direction: column;
     height: 100%; 
 }
-:local .friends-nav-container {
+:local .friends-container {
     display: flex;
     flex-direction: column;
     height: calc(100% - 72px);

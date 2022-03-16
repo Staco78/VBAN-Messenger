@@ -27,6 +27,7 @@
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  margin-right: 8px;
 }
 :local .username-container {
   font-size: 20px;
