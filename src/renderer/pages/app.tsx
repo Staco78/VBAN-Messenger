@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import LeftMenu from "@@/components/left-menu";
+import css from "css/pages/app.module.css";
 
 export default class App extends React.Component {
     constructor(props: any) {
@@ -10,11 +11,11 @@ export default class App extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>
+            <div className={css.mainContainer}>
+                <div className={css.leftMenuContainer}>
                     <LeftMenu />
                 </div>
-                <div>
+                <div className={css.container}>
                     <Outlet />
                 </div>
             </div>
