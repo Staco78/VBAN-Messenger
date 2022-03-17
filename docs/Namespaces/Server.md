@@ -39,12 +39,22 @@ Parameters
   - The user who changed his status.
 #
 
-### **friendRequestRecieved**
-##### on('friendRequestRecieved',(user: [User](/docs/Classes/User.md)) => {})
+### **friendRequestAccepted**
+##### on('friendRequestAccepted',(user: [VBANMUser](/docs/Classes/VBANMUser.md)) => {})
 Emitted when someone send a friend request.
 
 Parameters
-- user: [User](/docs/Classes/User.md)
+- user: [VBANMUser](/docs/Classes/VBANMUser.md)
+  - The user who accepted the friend request.
+
+#
+
+### **friendRequestRecieved**
+##### on('friendRequestRecieved',(user: [VBANMUser](/docs/Classes/VBANMUser.md)) => {})
+Emitted when someone send a friend request.
+
+Parameters
+- user: [VBANMUser](/docs/Classes/VBANMUser.md)
   - The user who sent the friend request.
 
 #
@@ -79,7 +89,7 @@ Parameters
 
 Return
 
-   - Recent conversations with a pagination system.
+   - Recent conversations with a paging system.
 #
 
 ### **getUser**

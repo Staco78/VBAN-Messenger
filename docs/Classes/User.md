@@ -7,7 +7,6 @@
   - [VBANMUser](/docs/Classes/VBANMUser.md)
 
 #
-
 # Properties
 
 
@@ -19,7 +18,7 @@ Address of the user. (Spoiler : It's an IP Address)
 
 ### `Readonly` **color**
 ##### color
-Color of the user. (IDK what is the type, help me please, I'm alone on this doc, the other guy don't want to help me - Piripe)
+Color of the user. (IDK what is the type, help me please, I'm alone on this documentation, the other guy don't want to help me - Piripe)
 
 #
 
@@ -55,7 +54,8 @@ Username of the user. (You don't need more explanations)
 
 # Methods
 
-### `from v0.4` **addToGroup**
+#### :warning: from v0.4
+### **addToGroup**
 ##### addToGroup(groupId: string)
 Add the user to a group (Because he's kind :smiley:)
 
@@ -79,13 +79,3 @@ Return
 
    - The DM channel with this user.
 #
-
-### **removeFriend**
-##### removeFriend()
-Remove the user as a friend (Because he's not very kind :rage:)
-
-#
-
-### **sendFriendRequest**
-##### sendFriendRequest()
-Send a friend request to the user
