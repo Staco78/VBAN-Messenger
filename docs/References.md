@@ -8,4 +8,4 @@
 - [class VBANMMessage]()
 - [class VBANMUser](/docs/Classes/VBANMUser.md)
 - [enum UserStatus](/docs/Enums/UserStatus.md)
-- [namespace Server](/docs/Server/Server.md)
+- [namespace Server](/docs/Namespaces/Server.md)
