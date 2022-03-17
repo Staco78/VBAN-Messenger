@@ -7,19 +7,19 @@
 
 # Properties
 
-### `Readonly `**id**
+### `Readonly` **id**
 ##### id: string
 Id of the channel. (Wow ! The identifier !)
 
 #
 
-### `Readonly `**name**
+### `Readonly` **name**
 ##### name: string
 Name of the channel. (- WHAT'S UR NAM BRO? - My nam iz Tom - OH ELLO TOM)
 
 #
 
-### `from v0.3 Readonly `**pinnedMessages**
+### `from v0.3 Readonly` **pinnedMessages**
 ##### pinnedMessages: [Message](/docs/Classes/Message.md)[]
 Messages pinned in the channel. (U want a pin bro? I've a lot of pins in my pin box!)
 

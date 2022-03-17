@@ -11,43 +11,43 @@
 # Properties
 
 
-### `Readonly `**address**
+### `Readonly` **address**
 ##### address: string
 Address of the user. (Spoiler : It's an IP Address)
 
 #
 
-### `Readonly `**color**
+### `Readonly` **color**
 ##### color
 Color of the user. (IDK what is the type, help me please, I'm alone on this doc, the other guy don't want to help me - Piripe)
 
 #
 
-### `Readonly `**commentary**
+### `Readonly` **commentary**
 ##### commentary: string
 Commentary of the user. (Bruh it's too simple to explain)
 
 #
 
-### `Readonly `**id**
+### `Readonly` **id**
 ##### id: number
 Id of the user. (LOULILOL I'VE YOU ID BRO)
 
 #
 
-### `Readonly `**port**
+### `Readonly` **port**
 ##### port: number
 Port of the user. (French joke : It's not a pig)
 
 #
 
-### `Readonly `**status**
+### `Readonly` **status**
 ##### status: [UserStatus](/docs/Enums/UserStatus.md)
 Status of the user. (It could be invisible (no))
 
 #
 
-### `Readonly `**username**
+### `Readonly` **username**
 ##### username: string
 Username of the user. (You don't need more explanations)
 
