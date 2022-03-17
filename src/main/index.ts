@@ -1,3 +1,4 @@
+import { init } from "@/db/users";
 import { server } from "@/vban/server";
 import { app, BrowserWindow, session } from "electron";
 import fs from "fs";
@@ -30,3 +31,5 @@ app.on("ready", () => {
 app.on("window-all-closed", () => {
     app.quit();
 });
+
+init();
