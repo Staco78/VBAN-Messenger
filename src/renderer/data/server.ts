@@ -14,6 +14,10 @@ namespace Server {
     export function sendMessage(msg: string, to: User) {
         window.electronAPI.sendMessage(msg, to.infos);
     }
+
+    export async function getCurrentUser(): Promise<User> {
+        return new User(await window.electronAPI.getCurrentUser());
+    }
 }
 
 export default Server;

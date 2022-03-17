@@ -12,6 +12,10 @@ export function initIPC(window: BrowserWindow, server: _Server) {
             name: "sendMessage",
             handler: (msg: string, to: UserData) => server.sendMessage(msg, to),
         },
+        {
+            name: "getCurrentUser",
+            handler: () => users.me,
+        }
     ];
     const serverEvents = ["message", "userConnected"];
 
