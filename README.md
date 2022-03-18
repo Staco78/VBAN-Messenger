@@ -4,7 +4,7 @@
 ⚠️ This project is currently in developpement, it could be bugged or unusable.
 
 
-#### Welcome to this *beautiful* repository of VBAN-Messenger (Also called VBAN-M).
+#### Welcome to the *beautiful* repository of VBAN-Messenger (Also called VBAN-M).
 
 If you want to contribute you can read the [VBAN-Messenger Renderer API References](/docs/References.md), some functions of the API references are not added/finished.
 The renderer API is the interface between the backend and the renderer (Frontend).
