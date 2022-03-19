@@ -24,7 +24,7 @@ npm i
 #### 2. Build native modules for electron
 Enter the following command:
 ```
-.\node_modules\.bin\electron-rebuild
+npm run rebuild
 ```
 #### 3. Build the projet
 Enter the following command:
