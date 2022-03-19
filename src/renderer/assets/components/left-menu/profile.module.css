@@ -15,10 +15,6 @@
   background-color: var(--blue-2);
 }
 :local .profile-picture-container {
-  width: 48px;
-  height: 48px;
-  background-color: black;
-  border-radius: 50%;
   margin-right: 8px;
 }
 :local .profile-texts-container {
@@ -33,6 +29,7 @@
   font-size: 20px;
   font-weight: 500;
   width: 100%;
+  user-select: none;
 }
 :local .username-at {
   color: var(--blue-2);
@@ -45,4 +42,5 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden; 
+  user-select: none;
 }

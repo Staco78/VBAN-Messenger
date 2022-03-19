@@ -4,12 +4,12 @@
     height: 24px;
     border-radius: 5px;
 }
-:local .online {
+:local .status[data-status="1"] {
     background-color: var(--green);
 }
-:local .dnd {
+:local .status[data-status="2"] {
     background-color: var(--red);
 }
-:local .idle {
+:local .status[data-status="3"] {
     background-color: var(--yellow);
 }

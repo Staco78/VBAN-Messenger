@@ -2,9 +2,9 @@ import React from "react";
 import css from "css/components/status.module.css";
 
 
-export default function Status(props: any) {
+export default function Status(props: {status: number}) {
 
 
-    return <div className={css[props.status]+" "+css.status}>
+    return <div data-status={props.status} className={css.status}>
     </div>;
 }
