@@ -13,7 +13,7 @@ You can also contribute by working on the backend or the frontend directly ([Fig
 
 ### How to build VBAN-Messenger for developpment
 #### Prerequisites
-[Node.js (LTS)](https://nodejs.org), [node-gyp](https://github.com/nodejs/node-gyp#installation) and [git](https://git-scm.com/)
+[Node.js (LTS)](https://nodejs.org), [git](https://git-scm.com/) and a configured C++ compiler for Node.js
 #### 1. Clone repository and install dependencies
 Enter the following commands:
 ```
@@ -21,12 +21,17 @@ git clone https://github.com/Staco78/VBAN-Messenger
 cd VBAN-Messenger
 npm i
 ```
-#### 2. Build the projet
+#### 2. Rebuild Electron
+Enter the following command:
+```
+.\node_modules\.bin\electron-rebuild
+```
+#### 3. Build the projet
 Enter the following command:
 ```
 npm run build
 ```
-#### 3. Run Electron
+#### 4. Run Electron
 Enter the following command:
 ```
 npm start
