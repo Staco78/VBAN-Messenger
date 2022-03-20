@@ -1,9 +1,29 @@
-import { User as UserType, UserData } from "@/typings";
+import { UserData, UserEvents } from "@/typings/user";
+import EventEmitter from "events";
 
-export default class User implements UserType {
-    constructor(public infos: UserData) {}
+declare interface User {
+    on<U extends keyof UserEvents>(event: U, listener: UserEvents[U]): this;
+}
+
+class User extends EventEmitter {
+    constructor(public readonly infos: UserData) {
+        super();
+        window.electronAPI.server.on("userStatusChanged", (user, status) => {
+            if (user.id === this.infos.id) {
+                const oldStatus = this.infos.status;
+                this.infos.status = status;
+                this.emit("statusChanged", oldStatus, status);
+            }
+        });
+    }
 
     get name() {
         return this.infos.userName;
     }
+
+    get status() {
+        return this.infos.status;
+    }
 }
+
+export default User;
