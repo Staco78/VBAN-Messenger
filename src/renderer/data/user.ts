@@ -1,6 +1,6 @@
-import { User as UserType, UserData } from "@/typings";
+import { UserData } from "@/typings/user";
 
-export default class User implements UserType {
+export default class User {
     constructor(public infos: UserData) {}
 
     get name() {

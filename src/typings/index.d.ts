@@ -1,74 +1,21 @@
-export interface PingData {
-    bitType: number;
-    bitFeature: number;
-    bitFeatureExt: number;
-    preferedRate: number;
-    minRate: number;
-    maxRate: number;
-    version: number;
+import User from "@/renderer/data/user";
+import { UserData, UserStatus } from "./user";
 
-    GPSPosition: string;
-    userPosition: string;
-    langCode: string;
-
-    deviceName: string;
-    manufacturerName: string;
-    applicationName: string;
-    userName: string;
-    userComment: string;
-}
-
-export interface ConnectionInfos {
-    address: string;
-    port: number;
-}
-
-export interface UserData extends PingData {
-    connectionInfos: ConnectionInfos;
-    isVBAN_M_User: boolean;
-}
-
-declare abstract class Packet {
-    constructor(public server: Server, public rinfo: RemoteInfo, public header: PacketHeader, public data: Buffer);
-    abstract parse(data: Buffer): void;
-}
-
-export interface User {
-    infos: UserData;
-    name: string;
-}
-
-interface _ServerEvents {
-    userConnected: (user: UserData) => void;
+export interface MainServerEvents {
+    userStatusChanged: (user: UserData, status: UserStatus) => void;
     message: (msg: string, sender: UserData) => void;
 }
 
-interface ServerEvents {
-    userConnected: (user: User) => void;
+export interface ServerEvents {
+    userStatusChanged: (user: User, status: UserStatus) => void;
     message: (msg: string, sender: User) => void;
 }
 
-declare interface Server {
-    on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
-    emit<U extends keyof ServerEvents>(event: U, ...args: Parameters<ServerEvents[U]>): boolean;
-}
-
-declare interface _Server {
-    on<U extends keyof _ServerEvents>(event: U, listener: _ServerEvents[U]): this;
-    emit<U extends keyof _ServerEvents>(event: U, ...args: Parameters<_ServerEvents[U]>): boolean;
-    sendMessage(msg: string, to: UserData);
-
-    sendPong(pingPacket: ServicePacket): void;
-    getUser(rinfo: ConnectionInfos): Promise<UserData>;
-    sendBuffer(buffer: Buffer, to: ConnectionInfos);
-}
-
 export interface IElectronAPI {
-    getAllUsers(): Promise<User[]>;
     sendMessage(msg: string, to: UserData);
     getCurrentUser(): Promise<UserData>;
     server: {
-        on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]): this;
+        on<U extends keyof MainServerEvents>(event: U, listener: MainServerEvents[U]): this;
     };
 }
 
