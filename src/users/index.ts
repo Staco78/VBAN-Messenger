@@ -30,6 +30,7 @@ namespace users {
             port: 6980,
         },
         isVBAN_M_User: true,
+        status: UserStatus.Online,
         id: 0n, // TODO: get id from db
     };
 
@@ -78,6 +79,7 @@ namespace users {
             },
             isVBAN_M_User: false,
             id: user.id,
+            status: UserStatus.Offline,
         };
     }
 
@@ -100,6 +102,7 @@ namespace users {
             connectionInfos,
             isVBAN_M_User: userData.applicationName === "VBAN-Messenger",
             id: getUserId(streamName, connectionInfos),
+            status: UserStatus.Online,
         };
     }
 

@@ -4,6 +4,7 @@ export interface UserData extends PingData {
     id: bigint;
     connectionInfos: ConnectionInfos;
     isVBAN_M_User: boolean;
+    status: UserStatus;
 }
 
 export interface DbUser {
@@ -18,4 +19,8 @@ export const enum UserStatus {
     Online,
     DoNotDisturb,
     Idle,
+}
+
+export interface UserEvents {
+    statusChanged: (oldStatus: UserStatus, newStatus: UserStatus) => void;
 }
