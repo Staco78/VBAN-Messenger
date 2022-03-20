@@ -1,20 +1,18 @@
 import React from "react";
-import css from "css/components/left-menu/profile.module.css";
+import css from "css/components/home/home-welcome.module.css";
 import Status from "@@/components/status";
 import Server from "@/renderer/data/server";
 import User from "@/renderer/data/user";
 import ProfilePicture from "../profile-picture";
 
-export default class Profile extends React.Component {
+export default class HomeWelcome extends React.Component {
     declare readonly state: {
         username: string;
-        status: number;
-        commentary: string;
     };
 
     constructor(props: any) {
         super(props);
-        this.state = { username: "", status: 0, commentary: "" };
+        this.state = { username: "" };
     }
     componentDidMount() {
         this.getUserInfos();
@@ -22,21 +20,18 @@ export default class Profile extends React.Component {
 
     render() {
         return (
-            <div className={css.profileContainer}>
+            <div className={css.welcomeContainer}>
                 <div className={css.profilePictureContainer}>
-                    <ProfilePicture username={this.state.username} color="hsl(342, 54%, 45%)" />
+                    <ProfilePicture username={this.state.username} color="hsl(342, 54%, 45%)" size="96px" />
                 </div>
-                <div className={css.profileTextsContainer}>
+                <div className={css.welcomeTextsContainer}>
+                    <div className={css.welcomeTextContainer}>
+                        Welcome
+                    </div>
                     <div className={css.usernameContainer}>
-                        <span className={css.usernameAt}>@</span>
                         {this.state.username}
                     </div>
-                    <div title={this.state.commentary} className={css.userCommentary}>
-                        {this.state.commentary}
-                    </div>
                 </div>
-                <Status status={this.state.status} />
-                <div></div>
             </div>
         );
     }
@@ -44,8 +39,6 @@ export default class Profile extends React.Component {
         Server.getCurrentUser().then((user: User) => {
             this.setState({
                 username: user.name,
-                status: 1,
-                commentary: "Eh hop ! Factorio furtif",
             });
         });
     }

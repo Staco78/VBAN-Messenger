@@ -1,0 +1,28 @@
+:local .welcome-container {
+    display: flex;
+    flex-direction: row;
+    height: 72px;
+    align-items: center;
+    padding: 0 0px 0 28px;
+}
+:local .profile-picture-container {
+    margin-right: 24px;
+}
+:local .welcome-texts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+:local .username-container {
+    font-size: 40px;
+    font-weight: 400;
+    width: 100%;
+    user-select: none;
+}
+.welcome-text-container {
+    font-size: 40px;
+    font-weight: 300;
+    width: 100%;
+    user-select: none;
+}

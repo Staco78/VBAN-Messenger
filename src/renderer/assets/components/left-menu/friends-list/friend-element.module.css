@@ -1,25 +1,21 @@
-:local .profile-container {
+:local .container {
+    width: 250px;
+    height: 64px;
+    border-radius: 5px;
+    padding: 3px 0 3px 0;
     display: flex;
     flex-direction: row;
-    height: 72px;
     align-items: center;
-    padding: 0 0px 0 28px;
 }
-:local .profile-container::after {
-    position: absolute;
-    content: "";
-    top: 72px;
-    left: 28px;
-    width: 219px;
-    height: 2px;
-    background-color: var(--blue-2);
+:local .container:hover {
+    background-color: #FFFFFF0D;
 }
 :local .profile-picture-container {
-    margin-right: 8px;
+    margin: 0 5px 0 8px;
 }
 :local .profile-texts-container {
     display: flex;
-    width: 109px;
+    width: 137px;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
@@ -35,8 +31,8 @@
     color: var(--blue-2);
 }
 :local .user-commentary {
-  color: var(--gray-2);
-  font-weight: 500;
+    color: var(--gray-2);
+    font-weight: 500;
     margin-top: 2px;
     font-size: 12px;
     width: 100%;
