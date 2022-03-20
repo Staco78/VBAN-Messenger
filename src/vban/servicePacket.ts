@@ -1,4 +1,11 @@
-import { ConnectionInfos, PacketHeader, PingData, ServicePacketFunction, ServicePacketHeader, ServicePacketType } from "@/typings/packet";
+import {
+    ConnectionInfos,
+    PacketHeader,
+    PingData,
+    ServicePacketFunction,
+    ServicePacketHeader,
+    ServicePacketType,
+} from "@/typings/packet";
 import { UserData } from "@/typings/user";
 import users from "@/users";
 import { randomInt } from "crypto";
@@ -45,8 +52,7 @@ namespace ServicePacket {
                 if (!userData) throw new Error("No data in identification packet");
                 users.add(connectionInfos, header.streamName, userData);
             }
-        }
-        else if (servicePacket.type == ServicePacketType.chatUTF8){
+        } else if (servicePacket.type == ServicePacketType.chatUTF8) {
             Server.emit("message", data.toString("utf8"), await users.getUser(connectionInfos, header.streamName));
         }
         eventEmitter.emit(`${servicePacket.type}-${servicePacket.function}`, connectionInfos, header, data);
@@ -97,7 +103,11 @@ namespace ServicePacket {
             const timeout = setTimeout(() => {
                 if (!resolved) {
                     resolved = true;
-                    ServicePacket.removeListener(ServicePacketType.identification, ServicePacketFunction.reply, handler);
+                    ServicePacket.removeListener(
+                        ServicePacketType.identification,
+                        ServicePacketFunction.reply,
+                        handler
+                    );
                     resolve(null);
                 }
             }, 5000);
@@ -108,9 +118,13 @@ namespace ServicePacket {
                     const userData = receiveIdentification(data);
                     if (!userData) throw new Error("No data in identification packet");
                     resolved = true;
-                    ServicePacket.removeListener(ServicePacketType.identification, ServicePacketFunction.reply, handler);
+                    ServicePacket.removeListener(
+                        ServicePacketType.identification,
+                        ServicePacketFunction.reply,
+                        handler
+                    );
                     clearTimeout(timeout);
-                    resolve(users.createUser(connectionInfos, header.streamName, userData));                    
+                    resolve(users.createUser(connectionInfos, header.streamName, userData));
                 }
             };
 

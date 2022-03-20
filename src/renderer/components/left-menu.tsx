@@ -18,7 +18,9 @@ export default class LeftMenu extends React.Component {
                 <Profile />
                 <div className={css.friendsContainer}>
                     <NavButtons tab={this.state.tab} setTab={(tab: number) => this.setTab(tab)} />
-                    <div><FriendsList /></div>
+                    <div>
+                        <FriendsList />
+                    </div>
                 </div>
             </div>
         );

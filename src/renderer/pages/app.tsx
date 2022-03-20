@@ -12,7 +12,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div className={css.mainContainer}>
-                    <LeftMenu />
+                <LeftMenu />
                 <div className={css.container}>
                     <Outlet />
                 </div>

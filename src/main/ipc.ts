@@ -15,7 +15,7 @@ export function initIPC(window: BrowserWindow) {
         {
             name: "getCurrentUser",
             handler: () => users.me,
-        }
+        },
     ];
     const serverEvents = ["message", "userStatusChanged"];
 
