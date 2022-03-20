@@ -26,7 +26,7 @@ export default class FriendsList extends React.Component {
     render() {
         return <div className={css.friendsListContainer}>
             {
-                this.state.users.map(user => <FriendElement user={user}/>)
+                this.state.users.map(user => <FriendElement key={user.id.toString()} user={user}/>)
             }
         </div>;
     }

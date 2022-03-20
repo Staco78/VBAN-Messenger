@@ -6,12 +6,6 @@
     height: 100%;
 }
 
-:local .left-menu-container {
-    display: block;
-    width: 275px;
-    background-color: var(--blue-1);
-}
-
 :local .container {
     display: block;
     width: calc(100% - 275px);

@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 275px;
+    background-color: var(--blue-1);
 }
 :local .friends-container {
     display: flex;
