@@ -29,7 +29,7 @@ Commentary of the user. (Bruh it's too simple to explain)
 #
 
 ### `Readonly` **id**
-##### id: number
+##### id: bigint
 Id of the user. (LOULILOL I'VE YOU ID BRO)
 
 #
