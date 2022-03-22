@@ -35,8 +35,8 @@
     color: var(--blue-2);
 }
 :local .user-commentary {
-  color: var(--gray-2);
-  font-weight: 500;
+    color: var(--gray-2);
+    font-weight: 500;
     margin-top: 2px;
     font-size: 12px;
     width: 100%;

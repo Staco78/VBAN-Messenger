@@ -11,7 +11,7 @@ module.exports = {
         alias: {
             ["@"]: path.resolve(__dirname, "src"),
             ["@@"]: path.resolve(__dirname, "src/renderer"),
-            ["css"]: path.resolve(__dirname,"src/renderer/assets")
+            ["css"]: path.resolve(__dirname, "src/renderer/assets"),
         },
         extensions: [".tsx", ".ts", ".js"],
     },
@@ -31,7 +31,7 @@ module.exports = {
                         options: {
                             modules: {
                                 localIdentName: "[local]-[hash:base64:8]",
-                                exportLocalsConvention: 'camelCase',
+                                exportLocalsConvention: "camelCase",
                             },
                         },
                     },
@@ -48,7 +48,12 @@ module.exports = {
             template: "./src/renderer/index.html",
         }),
         new CopyPLugin({
-            patterns: [{ from: path.resolve(__dirname, "src", "renderer", "assets"), to: path.resolve(__dirname, "dist", "assets") }],
+            patterns: [
+                {
+                    from: path.resolve(__dirname, "src", "renderer", "assets"),
+                    to: path.resolve(__dirname, "dist", "assets"),
+                },
+            ],
         }),
     ],
 };

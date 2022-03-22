@@ -1,0 +1,7 @@
+{
+    "arrowParens": "avoid",
+    "endOfLine": "auto",
+    "printWidth": 120,
+    "bracketSameLine": true,
+    "tabWidth": 4
+}

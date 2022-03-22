@@ -7,7 +7,9 @@ namespace db {
     export function init() {
         if (!fs.existsSync("db")) fs.mkdirSync("db");
         db = new Database("./db/users.sqlite");
-        db.prepare("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, address TEXT, port INTEGER)").run();
+        db.prepare(
+            "CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT, address TEXT, port INTEGER)"
+        ).run();
     }
 
     export function userDbFromUserData(userData: UserData): DbUser {
@@ -24,7 +26,12 @@ namespace db {
     }
 
     export function addUser(user: DbUser) {
-        db.prepare("INSERT INTO users (id, name, address, port) VALUES (?, ?, ?, ?)").run(user.id.toString(), user.name, user.address, user.port);
+        db.prepare("INSERT INTO users (id, name, address, port) VALUES (?, ?, ?, ?)").run(
+            user.id.toString(),
+            user.name,
+            user.address,
+            user.port
+        );
     }
 
     export function addIfNotExist(user: DbUser) {

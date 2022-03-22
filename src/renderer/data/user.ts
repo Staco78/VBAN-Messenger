@@ -1,5 +1,5 @@
 import { UserData, UserEvents } from "@/typings/user";
-import EventEmitter from "events";
+import EventEmitter from "./eventEmitter";
 
 declare interface User {
     on<U extends keyof UserEvents>(event: U, listener: UserEvents[U]): this;

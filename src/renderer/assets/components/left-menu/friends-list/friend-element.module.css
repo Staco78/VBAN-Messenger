@@ -9,7 +9,7 @@
     cursor: pointer;
 }
 :local .container:hover {
-    background-color: #FFFFFF0D;
+    background-color: #ffffff0d;
 }
 :local .profile-picture-container {
     margin: 0 5px 0 8px;

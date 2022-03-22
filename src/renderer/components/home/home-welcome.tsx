@@ -25,12 +25,8 @@ export default class HomeWelcome extends React.Component {
                     <ProfilePicture username={this.state.username} color="hsl(342, 54%, 45%)" size="96px" />
                 </div>
                 <div className={css.welcomeTextsContainer}>
-                    <div className={css.welcomeTextContainer}>
-                        Welcome
-                    </div>
-                    <div className={css.usernameContainer}>
-                        {this.state.username}
-                    </div>
+                    <div className={css.welcomeTextContainer}>Welcome</div>
+                    <div className={css.usernameContainer}>{this.state.username}</div>
                 </div>
             </div>
         );

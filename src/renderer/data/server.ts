@@ -13,7 +13,9 @@ namespace Server {
     }
 
     export function on<U extends keyof ServerEvents>(event: U, listener: ServerEvents[U]) {
-        const eventsMap: { [key in keyof ServerEvents]: (...args: Parameters<MainServerEvents[key]>) => Parameters<ServerEvents[key]> } = {
+        const eventsMap: {
+            [key in keyof ServerEvents]: (...args: Parameters<MainServerEvents[key]>) => Parameters<ServerEvents[key]>;
+        } = {
             message: (msg, user) => [msg, getUser(user)],
             userStatusChanged: (user, status) => [getUser(user), status],
         };

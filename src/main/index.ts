@@ -26,7 +26,8 @@ async function createWindow() {
 
     const reactDevtoolsPath = path.join(process.cwd(), "./react-devtools");
     if (process.env.NODE_ENV === "development") {
-        if (fs.existsSync(reactDevtoolsPath)) await session.defaultSession.loadExtension(reactDevtoolsPath, { allowFileAccess: true });
+        if (fs.existsSync(reactDevtoolsPath))
+            await session.defaultSession.loadExtension(reactDevtoolsPath, { allowFileAccess: true });
         window.webContents.openDevTools();
     }
     window.loadFile("dist/index.html");
