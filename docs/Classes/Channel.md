@@ -36,6 +36,21 @@ Messages pinned in the channel. (U want a pin bro? I've a lot of pins in my pin 
 
 # Methods
 
+### **getMessages**
+
+##### getMessages(page: number): [Message](/docs/Classes/Message.md)[]
+
+Properties
+
+-   page: number
+    -   Page index of the collection.
+
+Return
+
+-   An array of messages in the channel.
+
+#
+
 #### :warning: from v0.3
 
 ### **searchMessages**

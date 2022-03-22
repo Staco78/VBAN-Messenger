@@ -11,9 +11,9 @@
 
 ### `Readonly` **members**
 
-##### members: [User](/docs/Classes/User.md)
+##### members: [User](/docs/Classes/User.md)[]
 
-The user you're addressing. (What's this guy? Oh! That's my friend!)
+The members of the group. (OMG I KNOW WHO I'M TALKING WITH)
 
 #
 
