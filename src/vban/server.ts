@@ -1,6 +1,6 @@
 import { ConnectionInfos, PacketHeader, SubProtocol } from "@/typings/packet";
 import { UserData, UserStatus } from "@/typings/user";
-import users from "@/users";
+import users from "@/data/users";
 import dgram from "dgram";
 import EventEmitter from "events";
 import ServicePacket from "./servicePacket";

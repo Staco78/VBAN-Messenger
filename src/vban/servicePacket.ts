@@ -7,7 +7,7 @@ import {
     ServicePacketType,
 } from "@/typings/packet";
 import { UserData } from "@/typings/user";
-import users from "@/users";
+import users from "@/data/users";
 import { randomInt } from "crypto";
 import EventEmitter from "events";
 import { cp } from "fs";

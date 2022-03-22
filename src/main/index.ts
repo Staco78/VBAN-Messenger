@@ -1,4 +1,5 @@
-import users from "@/users";
+import channels from "@/data/channels";
+import users from "@/data/users";
 import Server from "@/vban/server";
 import { app, BrowserWindow, session } from "electron";
 import fs from "fs";
@@ -7,6 +8,7 @@ import { initIPC } from "./ipc";
 
 Server.init().then(() => {
     users.init();
+    channels.init();
     app.on("ready", () => {
         if (!process.argv.includes("--headless")) createWindow();
     });

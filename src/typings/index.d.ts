@@ -1,4 +1,5 @@
 import User from "@/renderer/data/user";
+import { DbChannel } from "./channels";
 import { UserData, UserStatus } from "./user";
 
 export interface MainServerEvents {
@@ -14,6 +15,7 @@ export interface ServerEvents {
 export interface IElectronAPI {
     sendMessage(msg: string, to: UserData);
     getCurrentUser(): Promise<UserData>;
+    getDMChannel(id: bigint): Promise<DbChannel>;
     server: {
         on<U extends keyof MainServerEvents>(event: U, listener: MainServerEvents[U]): this;
     };

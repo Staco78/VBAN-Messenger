@@ -6,4 +6,5 @@
     -   **VBANMUser**
 
 #
+
 #### :warning: This class have no property and no method.

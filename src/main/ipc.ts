@@ -1,4 +1,5 @@
-import users from "@/users";
+import channels from "@/data/channels";
+import users from "@/data/users";
 import Server from "@/vban/server";
 import { BrowserWindow, ipcMain } from "electron";
 
@@ -8,13 +9,13 @@ export function initIPC(window: BrowserWindow) {
             name: "getAllUsers",
             handler: () => users.getAllUsers(),
         },
-        // {
-        //     name: "sendMessage",
-        //     handler: (msg: string, to: UserData) => server.sendMessage(msg, to),
-        // },
         {
             name: "getCurrentUser",
             handler: () => users.me,
+        },
+        {
+            name: "getDMChannel",
+            handler: (id: bigint) => channels.getDM(id),
         },
     ];
     const serverEvents = ["message", "userStatusChanged"];
