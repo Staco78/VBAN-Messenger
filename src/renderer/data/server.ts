@@ -26,6 +26,11 @@ namespace Server {
     export async function getCurrentUser(): Promise<User> {
         return getUser(await window.electronAPI.getCurrentUser());
     }
+
+    export async function getAllUsers(): Promise<User[]> {
+        const u = await window.electronAPI.getAllUsers();
+        return u.map(user => getUser(user));
+    }
 }
 
 export default Server;

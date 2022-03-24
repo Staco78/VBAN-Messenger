@@ -16,6 +16,7 @@ export interface IElectronAPI {
     sendMessage(msg: string, to: UserData);
     getCurrentUser(): Promise<UserData>;
     getDMChannel(id: bigint): Promise<DbChannel>;
+    getAllUsers(): Promise<UserData[]>;
     server: {
         on<U extends keyof MainServerEvents>(event: U, listener: MainServerEvents[U]): this;
     };
