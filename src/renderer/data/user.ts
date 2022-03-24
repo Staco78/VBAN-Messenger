@@ -41,7 +41,7 @@ class User extends EventEmitter {
     }
 
     get color() {
-        return "0x923E79"; // beautiful pink
+        return "#923E79"; // beautiful pink
     }
 
     get commentary() {

@@ -2,27 +2,20 @@ import React from "react";
 import css from "css/components/left-menu/friends-list/friend-element.module.css";
 import Status from "../../status";
 import ProfilePicture from "../../profile-picture";
+import User from "@/renderer/data/user";
 
 export default function FriendElement(props: {
-    user: {
-        address: string;
-        color: string;
-        commentary: string;
-        id: bigint;
-        port: number;
-        status: number;
-        username: string;
-    };
+    user: User;
 }) {
     return (
         <div className={css.container}>
             <div className={css.profilePictureContainer}>
-                <ProfilePicture username={props.user.username} color={props.user.color} />
+                <ProfilePicture username={props.user.name} color={props.user.color} />
             </div>
             <div className={css.profileTextsContainer}>
                 <div className={css.usernameContainer}>
                     <span className={css.usernameAt}>@</span>
-                    {props.user.username}
+                    {props.user.name}
                 </div>
                 <div title={props.user.commentary} className={css.userCommentary}>
                     {props.user.commentary}
