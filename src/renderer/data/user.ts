@@ -20,6 +20,10 @@ class User extends EventEmitter {
         });
     }
 
+    get id() {
+        return this.infos.id;
+    }
+
     get name() {
         return this.infos.userName;
     }
@@ -28,9 +32,37 @@ class User extends EventEmitter {
         return this.infos.status;
     }
 
+    get address() {
+        return this.infos.connectionInfos.address;
+    }
+
+    get port() {
+        return this.infos.connectionInfos.port;
+    }
+
+    get color() {
+        return "0x923E79"; // beautiful pink
+    }
+
+    get commentary() {
+        return "This is a default commentary";
+    }
+
     async getDMChannel(): Promise<DMChannel> {
         if (!this.dmChannel) this.dmChannel = new DMChannel(this, await window.electronAPI.getDMChannel(this.infos.id));
         return this.dmChannel;
+    }
+
+    block() {
+        throw new Error("Not implemented");
+    }
+
+    addAsFriend() {
+        throw new Error("Not implemented");
+    }
+
+    removeFriend() {
+        throw new Error("Not implemented");
     }
 }
 
