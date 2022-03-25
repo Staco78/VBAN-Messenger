@@ -11,9 +11,6 @@ export default class RightIcons extends React.Component {
         this.state = {};
     }
     render() {
-        return (
-            <div className={css.rightIconsContainer}>
-            </div>
-        );
+        return <div className={css.rightIconsContainer}></div>;
     }
 }

@@ -4,9 +4,7 @@ import Status from "../../status";
 import ProfilePicture from "../../profilePicture";
 import User from "@/renderer/data/user";
 
-export default function FriendElement(props: {
-    user: User;
-}) {
+export default function FriendElement(props: { user: User }) {
     return (
         <div className={css.container}>
             <div className={css.profilePictureContainer}>

@@ -51,6 +51,7 @@ Who was mentionned in the message. (Mention is also called ping, so I will ping 
 When the message was sent. (4AM!? Wtf bro! You send messages too late!)
 
 #
+
 # Methods
 
 ### **getChannel**

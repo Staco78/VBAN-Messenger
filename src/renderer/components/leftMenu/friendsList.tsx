@@ -22,7 +22,9 @@ export default class FriendsList extends React.Component {
         return (
             <div className={css.friendsListContainer}>
                 {this.state.users.map(user => (
-                    <Link to={`/channel/user/${user.id.toString()}`} key={user.id.toString()}><FriendElement user={user} /></Link>
+                    <Link to={`/channel/user/${user.id.toString()}`} key={user.id.toString()}>
+                        <FriendElement user={user} />
+                    </Link>
                 ))}
             </div>
         );

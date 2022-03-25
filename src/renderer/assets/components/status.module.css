@@ -3,7 +3,7 @@
     width: 32px;
     height: 24px;
     border-radius: 5px;
-    
+
     min-width: 32px;
 }
 :local .status[data-status="1"] {

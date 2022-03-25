@@ -23,10 +23,12 @@ export default class TopBar extends React.Component {
                         </div>
                         <Status status={this.props.user.status} />
                     </div>
-                    <div className={css.userNoteContainer}>This is a note. (And not a not because a note is not a not, it is a note)</div>
+                    <div className={css.userNoteContainer}>
+                        This is a note. (And not a not because a note is not a not, it is a note)
+                    </div>
                 </div>
                 <div className={css.rightIconsContainer}>
-                    <RightIcons user={this.props.user}/>
+                    <RightIcons user={this.props.user} />
                 </div>
             </div>
         );
