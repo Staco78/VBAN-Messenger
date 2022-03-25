@@ -20,7 +20,7 @@ Address of the user. (Spoiler : It's an IP Address)
 
 ### `Readonly` **color**
 
-##### color
+##### color: string
 
 Color of the user. (IDK what is the type, help me please, I'm alone on this documentation, the other guy don't want to help me - Piripe)
 
@@ -42,6 +42,14 @@ Id of the user. (LOULILOL I'VE YOU ID BRO)
 
 #
 
+### **note**
+
+##### note: string
+
+Note of the user. ("You're gentle" that's your note.)
+
+#
+
 ### `Readonly` **port**
 
 ##### port: number
@@ -60,7 +68,7 @@ Status of the user. (It could be invisible (no))
 
 ### `Readonly` **username**
 
-##### username: string
+##### name: string
 
 Username of the user. (You don't need more explanations)
 

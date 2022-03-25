@@ -1,7 +1,7 @@
 import React from "react";
-import css from "css/components/left-menu/friends-list/friend-element.module.css";
+import css from "css/components/leftMenu/friendsList/friendElement.module.css";
 import Status from "../../status";
-import ProfilePicture from "../../profile-picture";
+import ProfilePicture from "../../profilePicture";
 import User from "@/renderer/data/user";
 
 export default function FriendElement(props: {

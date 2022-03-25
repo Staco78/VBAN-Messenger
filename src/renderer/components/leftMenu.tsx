@@ -1,8 +1,8 @@
 import React from "react";
-import css from "css/components/left-menu.module.css";
-import Profile from "./left-menu/profile";
-import NavButtons from "./left-menu/nav-buttons";
-import FriendsList from "./left-menu/friends-list";
+import css from "css/components/leftMenu.module.css";
+import Profile from "./leftMenu/profile";
+import NavButtons from "./leftMenu/navButtons";
+import FriendsList from "./leftMenu/friendsList";
 
 export default class LeftMenu extends React.Component {
     declare readonly state: {

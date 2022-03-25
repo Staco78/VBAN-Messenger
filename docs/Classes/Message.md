@@ -18,14 +18,6 @@ Author of the message. (WHO SENT THIS FKNG MESSAGE!? Oh! It's me! Ok.)
 
 #
 
-### `Readonly` **channel**
-
-##### channel: [Channel](/docs/Classes/Channel.md)
-
-Channel where the message whas sent. (OMG THIS MESSAGE WAS SENT IN THE DMS WITH MY GIRLFRIEND!!! I'm so happy <3)
-
-#
-
 ### `Readonly` **content**
 
 ##### content: string
@@ -57,5 +49,14 @@ Who was mentionned in the message. (Mention is also called ping, so I will ping 
 ##### timestamp: Date
 
 When the message was sent. (4AM!? Wtf bro! You send messages too late!)
+
+#
+# Methods
+
+### **getChannel**
+
+##### async getChannel(): [Channel](/docs/Classes/Channel.md)
+
+Channel where the message whas sent. (OMG THIS MESSAGE WAS SENT IN THE DMS WITH MY GIRLFRIEND!!! I'm so happy <3)
 
 #

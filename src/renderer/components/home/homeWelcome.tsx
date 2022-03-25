@@ -1,9 +1,9 @@
 import React from "react";
-import css from "css/components/home/home-welcome.module.css";
+import css from "css/components/home/homeWelcome.module.css";
 import Status from "@@/components/status";
 import Server from "@/renderer/data/server";
 import User from "@/renderer/data/user";
-import ProfilePicture from "../profile-picture";
+import ProfilePicture from "../profilePicture";
 
 export default class HomeWelcome extends React.Component {
     declare readonly state: {

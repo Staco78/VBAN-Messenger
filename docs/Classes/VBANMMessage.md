@@ -25,7 +25,7 @@ What's the file inside the message. (Bro! You wanna put a file in your message? 
 
 ### **editMessage()**
 
-##### editMessage(content: string)
+##### async editMessage(content: string)
 
 Edit the message by changing its `content`.
 
@@ -40,7 +40,7 @@ Parameters
 
 ### **deleteMessage()**
 
-##### deleteMessage()
+##### async deleteMessage()
 
 Delete the message.
 

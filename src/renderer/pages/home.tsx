@@ -1,5 +1,5 @@
 import React from "react";
-import HomeWelcome from "../components/home/home-welcome";
+import HomeWelcome from "../components/home/homeWelcome";
 import css from "css/pages/home.module.css";
 
 export default class Home extends React.Component {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import LeftMenu from "@@/components/left-menu";
+import LeftMenu from "@/renderer/components/leftMenu";
 import css from "css/pages/app.module.css";
 
 export default class App extends React.Component {

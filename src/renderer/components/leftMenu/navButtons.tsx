@@ -1,5 +1,5 @@
 import React from "react";
-import css from "css/components/left-menu/nav-button.module.css";
+import css from "css/components/leftMenu/navButton.module.css";
 
 export default function NavButtons(props: any) {
     return (

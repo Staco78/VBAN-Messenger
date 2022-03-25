@@ -38,7 +38,7 @@ Messages pinned in the channel. (U want a pin bro? I've a lot of pins in my pin 
 
 ### **getMessages**
 
-##### getMessages(page: number): [Message](/docs/Classes/Message.md)[]
+##### async getMessages(page: number): [Message](/docs/Classes/Message.md)[]
 
 Properties
 
@@ -55,7 +55,7 @@ Return
 
 ### **searchMessages**
 
-##### searchMessages(query: string, page: number): [Message](/docs/Classes/Message.md)[]
+##### async searchMessages(query: string, page: number): [Message](/docs/Classes/Message.md)[]
 
 Properties
 
@@ -72,7 +72,7 @@ Return
 
 ### **sendMessage**
 
-##### sendMessage(content: string, attachement: string)
+##### async sendMessage(content: string, attachement: string)
 
 Properties
 

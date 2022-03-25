@@ -1,9 +1,9 @@
 import React from "react";
-import css from "css/components/left-menu/profile.module.css";
+import css from "css/components/leftMenu/profile.module.css";
 import Status from "@@/components/status";
 import Server from "@/renderer/data/server";
 import User from "@/renderer/data/user";
-import ProfilePicture from "../profile-picture";
+import ProfilePicture from "../profilePicture";
 
 export default class Profile extends React.Component {
     declare readonly state: {

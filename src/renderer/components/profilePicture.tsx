@@ -1,5 +1,5 @@
 import React from "react";
-import css from "css/components/profile-picture.module.css";
+import css from "css/components/profilePicture.module.css";
 
 export default function ProfilePicture(props: { color: string; username: string; size?: string }) {
     return (

@@ -40,7 +40,7 @@ Type of the attachement. (You think I'm an image? NO! I'm a GIF! MOOAHAHAHAH!!!)
 
 ### **download**
 
-##### download(destination: string)
+##### async download(destination: string)
 
 Download the attachement.
 

@@ -21,7 +21,7 @@ The members of the group. (OMG I KNOW WHO I'M TALKING WITH)
 
 ### **changeName**
 
-##### changeName(name: string)
+##### async changeName(name: string)
 
 Change the name of the group. (Because the current is too... too... too?.. too!.. too.)
 
@@ -34,7 +34,7 @@ Parameters
 
 ### **removeUser**
 
-##### removeUser(userId: string)
+##### async removeUser(userId: string)
 
 Remove an user from the group. (Because he's not kind 🤬)
 

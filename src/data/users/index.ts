@@ -27,7 +27,7 @@ namespace users {
         userComment: "",
         connectionInfos: {
             address: "0.0.0.0",
-            port: 6980,
+            port: 6981,
         },
         isVBAN_M_User: true,
         status: UserStatus.Online,
