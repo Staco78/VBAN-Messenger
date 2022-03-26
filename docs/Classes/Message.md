@@ -10,14 +10,6 @@
 
 # Properties
 
-### `Readonly` **author**
-
-##### author: [User](/docs/Classes/User.md)
-
-Author of the message. (WHO SENT THIS FKNG MESSAGE!? Oh! It's me! Ok.)
-
-#
-
 ### `Readonly` **content**
 
 ##### content: string
@@ -53,6 +45,14 @@ When the message was sent. (4AM!? Wtf bro! You send messages too late!)
 #
 
 # Methods
+
+### **getAuthor**
+
+##### async getAuthor: [User](/docs/Classes/User.md)
+
+Author of the message. (WHO SENT THIS FKNG MESSAGE!? Oh! It's me! Ok.)
+
+#
 
 ### **getChannel**
 

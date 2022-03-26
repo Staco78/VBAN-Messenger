@@ -44,94 +44,97 @@ class VBANMessengerDMChannel extends React.Component {
         }
     }
     async getUser() {
-        switch (this.props.userId) {
-            case 1n: {
-                this.setState({
-                    user: new User({
-                        userComment: '"Je suce la vie" - Piripe, Décembre 2021',
-                        id: 1n,
-                        status: 1,
-                        userName: "Piripe",
-                        connectionInfos: {
-                            address: "127.0.0.1",
-                            port: 6980,
-                        },
-                        GPSPosition: "fr-FR",
-                        applicationName: "VBAN-Messenger",
-                        bitFeature: 0,
-                        bitFeatureExt: 0,
-                        bitType: 0,
-                        deviceName: "Computer",
-                        isVBAN_M_User: true,
-                        langCode: "fr-FR",
-                        manufacturerName: "Yo",
-                        maxRate: 0,
-                        minRate: 0,
-                        preferedRate: 0,
-                        userPosition: "",
-                        version: 0,
-                    }),
-                });
-                break;
-            }
-            case 2n: {
-                this.setState({
-                    user: new User({
-                        userComment: "Don't panic i'm just overclocked ಠ ᴥ ಠ",
-                        id: 2n,
-                        status: 2,
-                        userName: "enzomtp",
-                        connectionInfos: {
-                            address: "127.0.0.1",
-                            port: 6980,
-                        },
-                        GPSPosition: "fr-FR",
-                        applicationName: "VBAN-Messenger",
-                        bitFeature: 0,
-                        bitFeatureExt: 0,
-                        bitType: 0,
-                        deviceName: "Computer",
-                        isVBAN_M_User: true,
-                        langCode: "fr-FR",
-                        manufacturerName: "Yo",
-                        maxRate: 0,
-                        minRate: 0,
-                        preferedRate: 0,
-                        userPosition: "",
-                        version: 0,
-                    }),
-                });
-                break;
-            }
-            case 3n: {
-                this.setState({
-                    user: new User({
-                        userComment: '"Je suis tellement hétéro que si j\'étais une fille, je serais lesbienne."',
-                        id: 3n,
-                        status: 3,
-                        userName: "Vincent",
-                        connectionInfos: {
-                            address: "127.0.0.1",
-                            port: 6980,
-                        },
-                        GPSPosition: "fr-FR",
-                        applicationName: "VBAN-Messenger",
-                        bitFeature: 0,
-                        bitFeatureExt: 0,
-                        bitType: 0,
-                        deviceName: "Computer",
-                        isVBAN_M_User: true,
-                        langCode: "fr-FR",
-                        manufacturerName: "Yo",
-                        maxRate: 0,
-                        minRate: 0,
-                        preferedRate: 0,
-                        userPosition: "",
-                        version: 0,
-                    }),
-                });
-                break;
-            }
-        }
+        // switch (this.props.userId) {
+        //     case 1n: {
+        //         this.setState({
+        //             user: new User({
+        //                 userComment: '"Je suce la vie" - Piripe, Décembre 2021',
+        //                 id: 1n,
+        //                 status: 1,
+        //                 userName: "Piripe",
+        //                 connectionInfos: {
+        //                     address: "127.0.0.1",
+        //                     port: 6980,
+        //                 },
+        //                 GPSPosition: "fr-FR",
+        //                 applicationName: "VBAN-Messenger",
+        //                 bitFeature: 0,
+        //                 bitFeatureExt: 0,
+        //                 bitType: 0,
+        //                 deviceName: "Computer",
+        //                 isVBAN_M_User: true,
+        //                 langCode: "fr-FR",
+        //                 manufacturerName: "Yo",
+        //                 maxRate: 0,
+        //                 minRate: 0,
+        //                 preferedRate: 0,
+        //                 userPosition: "",
+        //                 version: 0,
+        //             }),
+        //         });
+        //         break;
+        //     }
+        //     case 2n: {
+        //         this.setState({
+        //             user: new User({
+        //                 userComment: "Don't panic i'm just overclocked ಠ ᴥ ಠ",
+        //                 id: 2n,
+        //                 status: 2,
+        //                 userName: "enzomtp",
+        //                 connectionInfos: {
+        //                     address: "127.0.0.1",
+        //                     port: 6980,
+        //                 },
+        //                 GPSPosition: "fr-FR",
+        //                 applicationName: "VBAN-Messenger",
+        //                 bitFeature: 0,
+        //                 bitFeatureExt: 0,
+        //                 bitType: 0,
+        //                 deviceName: "Computer",
+        //                 isVBAN_M_User: true,
+        //                 langCode: "fr-FR",
+        //                 manufacturerName: "Yo",
+        //                 maxRate: 0,
+        //                 minRate: 0,
+        //                 preferedRate: 0,
+        //                 userPosition: "",
+        //                 version: 0,
+        //             }),
+        //         });
+        //         break;
+        //     }
+        //     case 3n: {
+        //         this.setState({
+        //             user: new User({
+        //                 userComment: '"Je suis tellement hétéro que si j\'étais une fille, je serais lesbienne."',
+        //                 id: 3n,
+        //                 status: 3,
+        //                 userName: "Vincent",
+        //                 connectionInfos: {
+        //                     address: "127.0.0.1",
+        //                     port: 6980,
+        //                 },
+        //                 GPSPosition: "fr-FR",
+        //                 applicationName: "VBAN-Messenger",
+        //                 bitFeature: 0,
+        //                 bitFeatureExt: 0,
+        //                 bitType: 0,
+        //                 deviceName: "Computer",
+        //                 isVBAN_M_User: true,
+        //                 langCode: "fr-FR",
+        //                 manufacturerName: "Yo",
+        //                 maxRate: 0,
+        //                 minRate: 0,
+        //                 preferedRate: 0,
+        //                 userPosition: "",
+        //                 version: 0,
+        //             }),
+        //         });
+        //         break;
+        //     }
+        // }
+        Server.getUserById(this.props.userId).then(user => {
+            this.setState({ user });
+        });
     }
 }

@@ -23,13 +23,20 @@ export default class TopBar extends React.Component {
                         </div>
                         <Status status={this.props.user.status} />
                     </div>
-                    <div className={css.userNoteContainer}>
+                    <div
+                        title={"This is a note. (And not a not because a note is not a not, it is a note)"}
+                        contentEditable="true"
+                        suppressContentEditableWarning={true}
+                        className={css.userNoteContainer}
+                        placeholder="Edit note..."
+                        onBlur={focus => {
+                            focus.currentTarget.scrollLeft = 0;
+                            focus.currentTarget.title = focus.currentTarget.innerText;
+                        }}>
                         This is a note. (And not a not because a note is not a not, it is a note)
                     </div>
                 </div>
-                <div className={css.rightIconsContainer}>
-                    <RightIcons user={this.props.user} />
-                </div>
+                <RightIcons user={this.props.user} />
             </div>
         );
     }

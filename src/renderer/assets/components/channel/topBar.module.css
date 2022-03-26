@@ -47,9 +47,13 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    min-width: 100px;
+    min-width: 40px;
 }
-:local .right-icons-container {
-    width: max-content;
-    min-width: max-content;
+:local .user-note-container:focus {
+    text-overflow: clip;
+    outline: 0;
+}
+:local .user-note-container:empty::before {
+    color: var(--blue-1);
+    content: attr(placeholder);
 }

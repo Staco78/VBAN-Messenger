@@ -1,2 +1,7 @@
 :local .right-icons-container {
+    width: max-content;
+    min-width: max-content;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-width: 40px;
 }
