@@ -1,5 +1,5 @@
 import { MainServerEvents, ServerEvents } from "@/typings";
-import { UserData, UserStatus } from "@/typings/user";
+import { UserData } from "@/typings/user";
 import Message from "./message";
 import User from "./user";
 
@@ -17,7 +17,7 @@ namespace Server {
         const user = users.find(u => u.id === id);
         if (user) return user;
         const userData = await window.electronAPI.getUser(id);
-        if (!userData) throw new Error("user not found");
+        if (!userData) throw new Error("User not found");
         const newUser = new User(userData);
         users.push(newUser);
         return newUser;

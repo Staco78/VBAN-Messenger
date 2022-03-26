@@ -50,7 +50,7 @@ module.exports = {
         new CopyPLugin({
             patterns: [
                 {
-                    from: path.resolve(__dirname, "src", "renderer", "assets"),
+                    from: path.resolve(__dirname, "src", "renderer", "assets", "style.css"),
                     to: path.resolve(__dirname, "dist", "assets"),
                 },
             ],

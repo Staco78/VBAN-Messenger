@@ -17,6 +17,8 @@ Server.init().then(() => {
 async function createWindow() {
     const window = new BrowserWindow({
         titleBarStyle: "default",
+        title: "VBAN-Messenger",
+        autoHideMenuBar: true,
         webPreferences: {
             preload: path.join(process.cwd(), "src/main/preload.js"),
         },
