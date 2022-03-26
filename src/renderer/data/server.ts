@@ -5,7 +5,7 @@ import User from "./user";
 
 namespace Server {
     let users: User[] = [];
-    export function getUser(infos: UserData): User {
+    function getUser(infos: UserData): User {
         const user = users.find(user => user.infos.id === infos.id);
         if (user) return user;
         const newUser = new User(infos);

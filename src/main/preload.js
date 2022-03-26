@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("electronAPI", {
     getAllUsers: () => ipcRenderer.invoke("getAllUsers"),
     getCurrentUser: () => ipcRenderer.invoke("getCurrentUser"),
+    getUser: id => ipcRenderer.invoke("getUser", id),
     getDMChannel: id => ipcRenderer.invoke("getDMChannel", id),
     getMessages: (channelId, page, messagesByPages) =>
         ipcRenderer.invoke("getMessages", channelId, page, messagesByPages),
