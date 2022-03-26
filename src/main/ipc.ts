@@ -14,8 +14,17 @@ export function initIPC(window: BrowserWindow) {
             handler: () => users.me,
         },
         {
+            name: "getUser",
+            handler: (id: bigint) => users.getUserByID(id),
+        },
+        {
             name: "getDMChannel",
             handler: (id: bigint) => channels.getDM(id),
+        },
+        {
+            name: "getMessages",
+            handler: (channelId: bigint, page: number, messagesByPage: number) =>
+                channels.getMessages(channelId, page, messagesByPage),
         },
     ];
     const serverEvents = ["message", "userStatusChanged"];

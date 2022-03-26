@@ -8,11 +8,13 @@ import {
 } from "@/typings/packet";
 import { UserData } from "@/typings/user";
 import users from "@/data/users";
-import { randomInt } from "crypto";
+import { randomInt, randomUUID } from "crypto";
 import EventEmitter from "events";
-import { cp } from "fs";
 import { packetHeaderFromServicePacketHeader, packetHeaderToBuffer } from "./packet";
 import Server from "./server";
+import channels from "@/data/channels";
+import { bufferReadBigInt } from "@/utils";
+import { DbMessage } from "@/typings/messages";
 
 namespace ServicePacket {
     const eventEmitter = new EventEmitter();
@@ -43,6 +45,21 @@ namespace ServicePacket {
         };
     }
 
+    function createDbMessage(
+        connectionInfos: ConnectionInfos,
+        header: PacketHeader,
+        id: bigint,
+        data: Buffer
+    ): DbMessage {
+        return {
+            id,
+            channel: channels.getDM(users.getUserId(header.streamName, connectionInfos)).id,
+            content: data.toString("utf8"),
+            author: users.getUserId(header.streamName, connectionInfos),
+            timestamp: Date.now(),
+        };
+    }
+
     export async function parse(connectionInfos: ConnectionInfos, header: PacketHeader, data: Buffer) {
         const servicePacket = servicePacketFromHeader(header);
         if (servicePacket.type == ServicePacketType.identification) {
@@ -50,10 +67,20 @@ namespace ServicePacket {
                 sendPong(connectionInfos, header.frameCounter);
                 const userData = receiveIdentification(data);
                 if (!userData) throw new Error("No data in identification packet");
-                users.add(connectionInfos, header.streamName, userData);
+                users.add(users.createUser(connectionInfos, header.streamName, userData));
             }
         } else if (servicePacket.type == ServicePacketType.chatUTF8) {
-            Server.emit("message", data.toString("utf8"), await users.getUser(connectionInfos, header.streamName));
+            const user = await users.getUser(connectionInfos, header.streamName);
+            Server.emit(
+                "message",
+                createDbMessage(
+                    connectionInfos,
+                    header,
+                    user.isVBAN_M_User ? bufferReadBigInt(data, 0, 16) : BigInt(`0x${randomUUID().replace(/-/g, "")}`),
+                    user.isVBAN_M_User ? data.slice(16) : data
+                ),
+                user
+            );
         }
         eventEmitter.emit(`${servicePacket.type}-${servicePacket.function}`, connectionInfos, header, data);
     }

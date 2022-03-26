@@ -21,8 +21,15 @@ namespace db {
         };
     }
 
-    export function getUser(id: bigint): DbUser | null {
-        return db.prepare("SELECT * FROM users WHERE id = ?").get(id.toString()) ?? null;
+    function transform(data: any): DbUser {
+        data.id = BigInt(data.id);
+        return data;
+    }
+
+    export function find(id: bigint): DbUser | null {
+        const data = db.prepare("SELECT * FROM users WHERE id = ?").get(id.toString());
+        if (!data) return null;
+        return transform(data);
     }
 
     export function addUser(user: DbUser) {
@@ -35,11 +42,11 @@ namespace db {
     }
 
     export function addIfNotExist(user: DbUser) {
-        if (!getUser(user.id)) addUser(user);
+        if (!find(user.id)) addUser(user);
     }
 
     export function getAllUsers(): DbUser[] {
-        return db.prepare("SELECT * FROM users").all();
+        return db.prepare("SELECT * FROM users").all().map(transform);
     }
 }
 export default db;

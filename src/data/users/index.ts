@@ -106,8 +106,7 @@ namespace users {
         };
     }
 
-    export function add(connectionInfos: ConnectionInfos, streamName: string, userData: PingData): void {
-        const user = createUser(connectionInfos, streamName, userData);
+    export function add(user: UserData): void {
         if (user.isVBAN_M_User) db.addIfNotExist(db.userDbFromUserData(user));
         users.push(user);
         Server.emit("userStatusChanged", user, UserStatus.Online);
@@ -121,13 +120,27 @@ namespace users {
         const userData = await ServicePacket.ping(connectionInfos);
         if (!userData) throw new Error("user not found");
 
-        add(connectionInfos, streamName, userData);
+        add(createUser(connectionInfos, streamName, userData));
         return userData;
     }
 
     export function getAllUsers(): UserData[] {
         if (!initialized) return db.getAllUsers().map(createDefaultUserFromDbUser);
         return users;
+    }
+
+    export async function getUserByID(id: bigint): Promise<UserData | null> {
+        const user = users.find(u => u.id === id);
+        if (user) return user;
+
+        const userInfos = db.find(id);
+        if (!userInfos) return null;
+
+        const userData = await ServicePacket.ping(userInfos);
+        if (!userData) return null;
+
+        add(userData);
+        return userData;
     }
 }
 

@@ -1,10 +1,15 @@
 import { ChannelType, DbChannel } from "@/typings/channels";
+import { DbMessage } from "@/typings/messages";
+import Server from "@/vban/server";
 import assert from "assert";
 import db from "./db";
 
 namespace channels {
     export function init() {
         db.init();
+        Server.on("message", (msg, sender) => {
+            db.addMessage(msg, sender.id);
+        });
     }
 
     export function find(id: bigint): DbChannel | null {
@@ -23,6 +28,10 @@ namespace channels {
         }
         assert(channel.type == ChannelType.DM);
         return channel;
+    }
+
+    export function getMessages(channelId: bigint, page: number, messagesByPage: number): DbMessage[] {
+        return db.getMessages(channelId, page, messagesByPage);
     }
 }
 

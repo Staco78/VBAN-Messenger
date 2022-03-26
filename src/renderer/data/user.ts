@@ -1,5 +1,5 @@
 import { UserData, UserEvents } from "@/typings/user";
-import { DMChannel } from "./channel";
+import { channels, DMChannel } from "./channel";
 import EventEmitter from "./eventEmitter";
 
 declare interface User {
@@ -7,8 +7,6 @@ declare interface User {
 }
 
 class User extends EventEmitter {
-    protected dmChannel: DMChannel | null = null;
-
     constructor(public readonly infos: UserData) {
         super();
         window.electronAPI.server.on("userStatusChanged", (user, status) => {
@@ -49,8 +47,9 @@ class User extends EventEmitter {
     }
 
     async getDMChannel(): Promise<DMChannel> {
-        if (!this.dmChannel) this.dmChannel = new DMChannel(this, await window.electronAPI.getDMChannel(this.infos.id));
-        return this.dmChannel;
+        const chan = await channels.getChannel(this.infos.id);
+        if (!(chan instanceof DMChannel)) throw new Error("User is not connected");
+        return chan;
     }
 
     block() {

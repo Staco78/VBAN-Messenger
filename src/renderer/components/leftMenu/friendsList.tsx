@@ -1,7 +1,6 @@
 import React from "react";
 import css from "css/components/leftMenu/friendsList.module.css";
 import FriendElement from "./friendsList/friendElement";
-import Server from "@/renderer/data/server";
 import User from "@/renderer/data/user";
 import { Link } from "react-router-dom";
 
@@ -61,9 +60,5 @@ export default class FriendsList extends React.Component {
                 },
             ],
         });
-        // Server.getAllUsers().then(users => {
-        //     console.log(users);
-        //     this.setState({users});
-        // })
     }
 }
